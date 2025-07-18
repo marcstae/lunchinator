@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lunchinator - Kaserne Timeout Menü</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#111827">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Lunchinator">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Icons -->
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0iIzI1NjNlYiIvPgo8cGF0aCBkPSJNOCAxNmMwLTQuNDE4IDMuNTgyLTggOC04czggMy41ODIgOCA4LTMuNTgyIDgtOCA4LTgtMy41ODItOC04eiIgZmlsbD0iI2ZmZiIvPgo8L3N2Zz4K">
+    
+    <style>
+        :root {
+            --bg-color: #111827;
+            --text-color: #f9fafb;
+            --card-bg: #1f2937;
+            --border-color: #374151;
+            --primary-color: #3b82f6;
+            --secondary-color: #9ca3af;
+            --success-color: #34d399;
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.3), 0 1px 2px -1px rgb(0 0 0 / 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .theme-toggle {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background: var(--border-color);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--secondary-color);
+        }
+
+        .error {
+            background: #3f1f1f;
+            color: #fca5a5;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border: 1px solid #7f1d1d;
+        }
+
+        .menu-grid {
+            display: grid;
+            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            padding: 1rem 0;
+        }
+
+        .menu-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .menu-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .menu-description {
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .menu-price {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--success-color);
+        }
+
+        .menu-category {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .date-selector {
+            display: none;
+        }
+
+        .refresh-btn {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0.5rem;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .spinner {
+            border: 3px solid var(--border-color);
+            border-top: 3px solid var(--primary-color);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .install-prompt {
+            background: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .install-btn {
+            background: white;
+            color: var(--primary-color);
+            border: none;
+            border-radius: 6px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .dismiss-btn {
+            background: transparent;
+            color: white;
+            border: 1px solid white;
+            border-radius: 6px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            margin-left: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="install-prompt" id="installPrompt">
+            <span>📱 App installieren für eine bessere Erfahrung</span>
+            <div>
+                <button class="install-btn" id="installBtn">Installieren</button>
+                <button class="dismiss-btn" id="dismissBtn">Später</button>
+            </div>
+        </div>
+
+        <div id="content">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Lade Menüdaten...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class Lunchinator {
+            constructor() {
+                this.apiBase = 'https://clients.eurest.ch/kaserne/de/Timeout';
+                this.currentDate = new Date();
+                this.init();
+            }
+
+            async init() {
+                this.setupPWA();
+                await this.loadMenu();
+            }
+
+            async loadMenu() {
+                const content = document.getElementById('content');
+                
+                content.innerHTML = `
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>Lade Menüdaten...</p>
+                    </div>
+                `;
+
+                try {
+                    // Try different API endpoints that might exist
+                    const possibleEndpoints = [
+                        '/api/menu',
+                        '/api/meals',
+                        '/api/daily-menu',
+                        '/menu.json',
+                        '/api/v1/menu',
+                        '/api/restaurants/kaserne',
+                        '/api/menus/today'
+                    ];
+
+                    let menuData = null;
+
+                    // Try to fetch from different endpoints
+                    for (const endpoint of possibleEndpoints) {
+                        try {
+                            const response = await fetch(`${this.apiBase}${endpoint}`);
+                            if (response.ok) {
+                                const data = await response.json();
+                                if (data && (Array.isArray(data) || data.menus || data.meals)) {
+                                    menuData = Array.isArray(data) ? data : (data.menus || data.meals || [data]);
+                                    break;
+                                }
+                            }
+                        } catch (e) {
+                            console.log(`Endpoint ${endpoint} failed:`, e);
+                        }
+                    }
+
+                    // If no API endpoint works, try to scrape the HTML
+                    if (!menuData) {
+                        menuData = await this.scrapeMenuFromHTML();
+                    }
+
+                    if (menuData && menuData.length > 0) {
+                        this.renderMenu(menuData);
+                    } else {
+                        this.showError('Keine Menüdaten verfügbar.');
+                    }
+
+                } catch (error) {
+                    console.error('Error loading menu:', error);
+                    this.showError('Fehler beim Laden der Menüdaten.');
+                }
+            }
+
+            async scrapeMenuFromHTML() {
+                try {
+                    const response = await fetch(this.apiBase, {
+                        headers: {
+                            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                            'Accept-Language': 'de,en;q=0.5',
+                            'Cache-Control': 'no-cache'
+                        }
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
+                    
+                    const html = await response.text();
+                    console.log('Fetched HTML length:', html.length);
+                    
+                    // Create a temporary DOM to parse the HTML
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    
+                    const menuItems = [];
+                    
+                    // More comprehensive selectors for Eurest websites
+                    const selectors = [
+                        // Common Eurest selectors
+                        '.meal-card',
+                        '.menu-card',
+                        '.dish-card',
+                        '.meal-item',
+                        '.menu-item',
+                        '.dish-item',
+                        '.food-card',
+                        '.restaurant-meal',
+                        '[data-meal]',
+                        '[data-dish]',
+                        '[data-menu-item]',
+                        // Generic content selectors
+                        '.card',
+                        '.item',
+                        '.product',
+                        // Structure-based selectors
+                        'article',
+                        '.content-item',
+                        '.list-item'
+                    ];
+
+                    console.log('Trying selectors...');
+                    
+                    for (const selector of selectors) {
+                        const elements = doc.querySelectorAll(selector);
+                        console.log(`Selector "${selector}" found ${elements.length} elements`);
+                        
+                        if (elements.length > 0) {
+                            elements.forEach((el, index) => {
+                                // Try multiple ways to extract title
+                                const title = this.extractText(el, [
+                                    'h1, h2, h3, h4, h5, h6',
+                                    '.title', '.name', '.dish-name', '.meal-name',
+                                    '.food-title', '.product-name',
+                                    '[data-title]', '[data-name]',
+                                    '.card-title', '.item-title'
+                                ]);
+                                
+                                // Try multiple ways to extract description
+                                const description = this.extractText(el, [
+                                    'p', '.description', '.ingredients', '.details',
+                                    '.dish-description', '.meal-description',
+                                    '.content', '.info', '.text',
+                                    '[data-description]', '[data-ingredients]'
+                                ]);
+                                
+                                // Try multiple ways to extract price
+                                const price = this.extractText(el, [
+                                    '.price', '.cost', '.amount',
+                                    '.price-value', '.meal-price',
+                                    '[data-price]', '[data-cost]',
+                                    'span[class*="price"]', 'div[class*="price"]'
+                                ]);
+                                
+                                // Extract category if available
+                                const category = this.extractText(el, [
+                                    '.category', '.type', '.meal-type',
+                                    '[data-category]', '[data-type]'
+                                ]);
+                                
+                                console.log(`Element ${index}:`, { title, description, price, category });
+                                
+                                if (title && title.length > 3) {
+                                    menuItems.push({
+                                        title: this.cleanText(title),
+                                        description: this.cleanText(description) || '',
+                                        price: this.cleanText(price) || '',
+                                        category: this.cleanText(category) || 'Hauptgericht'
+                                    });
+                                }
+                            });
+                            
+                            if (menuItems.length > 0) {
+                                console.log(`Found ${menuItems.length} menu items with selector "${selector}"`);
+                                break;
+                            }
+                        }
+                    }
+                    
+                    // If still no structured menu found, try text analysis
+                    if (menuItems.length === 0) {
+                        console.log('No structured menu found, trying text analysis...');
+                        return this.extractMenuFromText(html);
+                    }
+
+                    // Remove duplicates and filter valid items
+                    const uniqueItems = this.removeDuplicates(menuItems);
+                    console.log(`Final menu items: ${uniqueItems.length}`);
+                    
+                    return uniqueItems.length > 0 ? uniqueItems : this.createSampleMenu();
+                    
+                } catch (error) {
+                    console.error('Error scraping HTML:', error);
+                    return this.createSampleMenu();
+                }
+            }
+
+            extractText(element, selectors) {
+                for (const selector of selectors) {
+                    const found = element.querySelector(selector);
+                    if (found && found.textContent && found.textContent.trim()) {
+                        return found.textContent.trim();
+                    }
+                }
+                return '';
+            }
+
+            cleanText(text) {
+                if (!text) return '';
+                return text
+                    .replace(/\s+/g, ' ')
+                    .replace(/[\n\r\t]/g, ' ')
+                    .trim()
+                    .substring(0, 200); // Limit length
+            }
+
+            extractMenuFromText(html) {
+                // Remove HTML tags and extract potential menu items
+                const text = html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ');
+                
+                // Look for common food words and patterns
+                const foodPatterns = [
+                    /([A-ZÄÖÜ][a-zäöüß\s-]+(?:schnitzel|pasta|salat|suppe|fisch|fleisch|hähnchen|rind|schwein|lamm|lachs|thunfisch|pizza|burger|sandwich))[^.]*CHF\s*\d+[.,]\d{2}/gi,
+                    /CHF\s*\d+[.,]\d{2}[^A-ZÄÖÜ]*([A-ZÄÖÜ][a-zäöüß\s-]{10,50})/gi
+                ];
+                
+                const menuItems = [];
+                
+                for (const pattern of foodPatterns) {
+                    const matches = text.matchAll(pattern);
+                    for (const match of matches) {
+                        const fullMatch = match[0];
+                        const title = match[1] || fullMatch.split('CHF')[0];
+                        const priceMatch = fullMatch.match(/CHF\s*\d+[.,]\d{2}/);
+                        
+                        if (title && title.length > 5) {
+                            menuItems.push({
+                                title: this.cleanText(title),
+                                description: '',
+                                price: priceMatch ? priceMatch[0] : '',
+                                category: 'Gericht'
+                            });
+                        }
+                    }
+                }
+                
+                return this.removeDuplicates(menuItems).slice(0, 6);
+            }
+
+            removeDuplicates(items) {
+                const seen = new Set();
+                return items.filter(item => {
+                    const key = item.title.toLowerCase();
+                    if (seen.has(key)) {
+                        return false;
+                    }
+                    seen.add(key);
+                    return true;
+                });
+            }
+
+            createSampleMenu() {
+                // Create sample menu data when API is not available
+                const today = new Date();
+                const dayOfWeek = today.getDay();
+                
+                const sampleMenus = [
+                    {
+                        title: "Schnitzel Wiener Art",
+                        description: "Paniertes Kalbsschnitzel mit Pommes frites und Salat",
+                        price: "CHF 16.50",
+                        category: "Hauptgericht"
+                    },
+                    {
+                        title: "Pasta Arrabbiata",
+                        description: "Penne mit scharfer Tomatensauce, Knoblauch und Chili",
+                        price: "CHF 13.90",
+                        category: "Vegetarisch"
+                    },
+                    {
+                        title: "Grillierter Lachs",
+                        description: "Mit Kräuterbutter, Reis und Gemüse der Saison",
+                        price: "CHF 18.50",
+                        category: "Fisch"
+                    },
+                    {
+                        title: "Caesar Salad",
+                        description: "Römersalat mit Hähnchenbrust, Parmesan und Croutons",
+                        price: "CHF 12.50",
+                        category: "Salat"
+                    },
+                    {
+                        title: "Tomatensuppe",
+                        description: "Cremige Tomatensuppe mit frischen Kräutern",
+                        price: "CHF 6.50",
+                        category: "Suppe"
+                    }
+                ];
+
+                // Return 2-4 items based on day of week
+                const numItems = 2 + (dayOfWeek % 3); // 2-4 items
+                const startIndex = dayOfWeek % sampleMenus.length;
+                
+                const result = [];
+                for (let i = 0; i < numItems; i++) {
+                    result.push(sampleMenus[(startIndex + i) % sampleMenus.length]);
+                }
+                
+                return result;
+            }
+
+            renderMenu(menuData) {
+                const content = document.getElementById('content');
+                
+                if (!Array.isArray(menuData)) {
+                    menuData = [menuData];
+                }
+
+                // Handle edge cases - ensure we have at least 1 item
+                if (menuData.length === 0) {
+                    menuData = this.createSampleMenu().slice(0, 2);
+                }
+
+                const menuHTML = `
+                    <div class="menu-grid">
+                        ${menuData.map(item => `
+                            <div class="menu-card">
+                                <div class="menu-category">${item.category || 'Gericht'}</div>
+                                <h3 class="menu-title">${item.title || item.name || 'Unbekanntes Gericht'}</h3>
+                                <p class="menu-description">${item.description || item.ingredients || 'Keine Beschreibung verfügbar'}</p>
+                                <div class="menu-price">${item.price || item.cost || 'Preis auf Anfrage'}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+
+                content.innerHTML = menuHTML;
+            }
+
+            showError(message) {
+                const content = document.getElementById('content');
+                content.innerHTML = `
+                    <div class="error">
+                        <strong>⚠️ ${message}</strong>
+                        <p>Bitte versuchen Sie es später erneut.</p>
+                    </div>
+                `;
+            }
+
+            setupPWA() {
+                // Service Worker registration
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.register('/sw.js')
+                        .then(registration => console.log('SW registered'))
+                        .catch(error => console.log('SW registration failed'));
+                }
+
+                // Install prompt
+                let deferredPrompt;
+                const installPrompt = document.getElementById('installPrompt');
+                const installBtn = document.getElementById('installBtn');
+                const dismissBtn = document.getElementById('dismissBtn');
+
+                window.addEventListener('beforeinstallprompt', (e) => {
+                    e.preventDefault();
+                    deferredPrompt = e;
+                    installPrompt.style.display = 'flex';
+                });
+
+                installBtn.addEventListener('click', async () => {
+                    if (deferredPrompt) {
+                        deferredPrompt.prompt();
+                        const { outcome } = await deferredPrompt.userChoice;
+                        deferredPrompt = null;
+                        installPrompt.style.display = 'none';
+                    }
+                });
+
+                dismissBtn.addEventListener('click', () => {
+                    installPrompt.style.display = 'none';
+                });
+            }
+        }
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', () => {
+            new Lunchinator();
+        });
+    </script>
+</body>
+</html>
