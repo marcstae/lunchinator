@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-HTML Website Generator for Eurest Menu
+Live HTML Website Generator for Eurest Menu
 
-This script generates a beautiful HTML website from the scraped menu data.
+This script generates a PWA website with live JavaScript scraping functionality.
 """
 
 import json
@@ -18,7 +18,18 @@ def load_menu_data(json_file: str) -> Dict:
             return json.load(f)
     except Exception as e:
         print(f"Error loading menu data: {e}")
-        sys.exit(1)
+        # Return empty data structure for live scraping
+        return {
+            'restaurant': 'Eurest Kaserne Timeout',
+            'location': 'Papiermühlestrasse 15, 3014 Bern',
+            'menu_items': [],
+            'total_items': 0,
+            'date_info': {
+                'scraped_at': datetime.now().isoformat(),
+                'display_date': datetime.now().strftime('%Y-%m-%d')
+            },
+            'url': 'https://clients.eurest.ch/kaserne/de/Timeout'
+        }
 
 
 def generate_css() -> str:
@@ -414,200 +425,6 @@ body {
     transition: all 0.3s ease;
 }
 
-/* Responsive design and mobile optimizations */
-@media (max-width: 768px) {
-    body {
-        padding: 0;
-        background: var(--bg-secondary);
-    }
-    
-    .dark-mode-toggle {
-        top: 16px;
-        right: 16px;
-        width: 44px;
-        height: 44px;
-        font-size: 18px;
-    }
-    
-    .container {
-        border-radius: 0;
-        border: none;
-        box-shadow: none;
-        min-height: 100vh;
-    }
-    
-    .header {
-        padding: 20px 20px 32px 20px;
-        /* Account for iOS status bar */
-        padding-top: max(20px, env(safe-area-inset-top));
-    }
-    
-    .header h1 {
-        font-size: 1.75rem;
-    }
-    
-    .header .subtitle {
-        font-size: 0.9rem;
-    }
-    
-    .header .location {
-        font-size: 0.8rem;
-    }
-    
-    .meta-info {
-        flex-direction: column;
-        text-align: center;
-        padding: 16px 20px;
-        gap: 12px;
-    }
-    
-    .meta-item {
-        font-size: 0.8rem;
-    }
-    
-    .price-stats {
-        font-size: 0.8rem;
-        padding: 6px 12px;
-    }
-    
-    .content {
-        padding: 24px 20px;
-        padding-bottom: max(24px, env(safe-area-inset-bottom));
-    }
-    
-    .category-section {
-        margin-bottom: 32px;
-    }
-    
-    .category-header {
-        padding: 16px 0;
-        margin-bottom: 16px;
-    }
-    
-    .category-header h2 {
-        font-size: 1rem;
-    }
-    
-    .category-count {
-        font-size: 0.7rem;
-        padding: 3px 8px;
-    }
-    
-    .menu-grid {
-        grid-template-columns: 1fr;
-        gap: 16px;
-    }
-    
-    .menu-item {
-        padding: 20px;
-        /* Better touch targets */
-        min-height: 44px;
-        cursor: pointer;
-        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-        user-select: none;
-        position: relative;
-    }
-    
-    .menu-item:active {
-        background-color: var(--bg-accent);
-    }
-    
-    .item-name {
-        font-size: 1rem;
-        margin-bottom: 6px;
-    }
-    
-    .item-description {
-        font-size: 0.8rem;
-        margin-bottom: 16px;
-        line-height: 1.4;
-    }
-    
-    .item-footer {
-        margin-top: 16px;
-        padding-top: 16px;
-    }
-    
-    .item-price {
-        font-size: 1.1rem;
-    }
-    
-    .item-category {
-        font-size: 0.7rem;
-        padding: 4px 8px;
-    }
-    
-    .footer {
-        padding: 24px 20px;
-        padding-bottom: max(24px, env(safe-area-inset-bottom));
-    }
-    
-    .footer-links {
-        flex-direction: column;
-        gap: 12px;
-    }
-    
-    .footer-link {
-        font-size: 0.8rem;
-        padding: 8px;
-        /* Better touch targets */
-        min-height: 44px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    .refresh-info {
-        margin: 16px 20px 24px 20px;
-        padding: 12px;
-        font-size: 0.8rem;
-    }
-    
-    .no-items {
-        padding: 48px 20px;
-    }
-}
-
-/* iOS specific styles */
-@supports (-webkit-touch-callout: none) {
-    body {
-        /* Disable iOS bounce scroll */
-        position: fixed;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-    }
-    
-    .container {
-        height: 100vh;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-    
-    /* iOS safe area support */
-    .header {
-        padding-top: max(20px, env(safe-area-inset-top));
-    }
-    
-    .footer {
-        padding-bottom: max(24px, env(safe-area-inset-bottom));
-    }
-}
-
-/* Touch optimizations */
-@media (pointer: coarse) {
-    .menu-item {
-        padding: 24px;
-        border-radius: 8px;
-    }
-    
-    .footer-link,
-    .menu-item {
-        /* Ensure minimum touch target size */
-        min-height: 44px;
-    }
-}
-
 /* Loading and error states */
 .loading-state,
 .error-state {
@@ -674,6 +491,194 @@ body {
     50% { opacity: 0.5; }
 }
 
+/* Responsive design and mobile optimizations */
+@media (max-width: 768px) {
+    body {
+        padding: 0;
+        background: var(--bg-secondary);
+    }
+    
+    .dark-mode-toggle {
+        top: 16px;
+        right: 16px;
+        width: 44px;
+        height: 44px;
+        font-size: 18px;
+    }
+    
+    .container {
+        border-radius: 0;
+        border: none;
+        box-shadow: none;
+        min-height: 100vh;
+    }
+    
+    .header {
+        padding: 20px 20px 32px 20px;
+        padding-top: max(20px, env(safe-area-inset-top));
+    }
+    
+    .header h1 {
+        font-size: 1.75rem;
+    }
+    
+    .header .subtitle {
+        font-size: 0.9rem;
+    }
+    
+    .header .location {
+        font-size: 0.8rem;
+    }
+    
+    .meta-info {
+        flex-direction: column;
+        text-align: center;
+        padding: 16px 20px;
+        gap: 12px;
+    }
+    
+    .meta-item {
+        font-size: 0.8rem;
+    }
+    
+    .price-stats {
+        font-size: 0.8rem;
+        padding: 6px 12px;
+    }
+    
+    .content {
+        padding: 24px 20px;
+        padding-bottom: max(24px, env(safe-area-inset-bottom));
+    }
+    
+    .category-section {
+        margin-bottom: 32px;
+    }
+    
+    .category-header {
+        padding: 16px 0;
+        margin-bottom: 16px;
+    }
+    
+    .category-header h2 {
+        font-size: 1rem;
+    }
+    
+    .category-count {
+        font-size: 0.7rem;
+        padding: 3px 8px;
+    }
+    
+    .menu-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .menu-item {
+        padding: 20px;
+        min-height: 44px;
+        cursor: pointer;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        user-select: none;
+        position: relative;
+    }
+    
+    .menu-item:active {
+        background-color: var(--bg-accent);
+    }
+    
+    .item-name {
+        font-size: 1rem;
+        margin-bottom: 6px;
+    }
+    
+    .item-description {
+        font-size: 0.8rem;
+        margin-bottom: 16px;
+        line-height: 1.4;
+    }
+    
+    .item-footer {
+        margin-top: 16px;
+        padding-top: 16px;
+    }
+    
+    .item-price {
+        font-size: 1.1rem;
+    }
+    
+    .item-category {
+        font-size: 0.7rem;
+        padding: 4px 8px;
+    }
+    
+    .footer {
+        padding: 24px 20px;
+        padding-bottom: max(24px, env(safe-area-inset-bottom));
+    }
+    
+    .footer-links {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .footer-link {
+        font-size: 0.8rem;
+        padding: 8px;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .refresh-info {
+        margin: 16px 20px 24px 20px;
+        padding: 12px;
+        font-size: 0.8rem;
+    }
+    
+    .no-items {
+        padding: 48px 20px;
+    }
+}
+
+/* iOS specific styles */
+@supports (-webkit-touch-callout: none) {
+    body {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+    
+    .container {
+        height: 100vh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .header {
+        padding-top: max(20px, env(safe-area-inset-top));
+    }
+    
+    .footer {
+        padding-bottom: max(24px, env(safe-area-inset-bottom));
+    }
+}
+
+/* Touch optimizations */
+@media (pointer: coarse) {
+    .menu-item {
+        padding: 24px;
+        border-radius: 8px;
+    }
+    
+    .footer-link,
+    .menu-item {
+        min-height: 44px;
+    }
+}
+
 /* Print styles */
 @media print {
     body {
@@ -690,38 +695,329 @@ body {
     .menu-item {
         break-inside: avoid;
         box-shadow: none;
-        border: 1px solid #e8e8e8;
+        border: 1px solid var(--border-primary);
     }
     
     .header::after,
     .category-header::after {
         display: none;
     }
+    
+    .dark-mode-toggle {
+        display: none;
+    }
 }
 """
 
 
-def get_category_emoji(category: str) -> str:
-    """Get emoji for category."""
-    emoji_map = {
-        'Menu': '🍽️',
-        'Vegi': '🥗',
-        'Hit': '⭐',
-        'Frühstück': '🥐',
-        'Other': '🍴'
+def generate_live_scraper_js() -> str:
+    """Generate JavaScript code to scrape menu data directly in the browser."""
+    return '''
+// Live menu scraper - runs in the browser
+class EurestMenuScraper {
+    constructor() {
+        this.baseUrl = 'https://clients.eurest.ch/kaserne/de/Timeout';
+        this.proxyUrl = 'https://api.allorigins.win/get?url=';
+        this.cache = null;
+        this.cacheTime = null;
+        this.cacheTimeout = 5 * 60 * 1000; // 5 minutes
     }
-    return emoji_map.get(category, '🍴')
 
+    async fetchWithProxy(url) {
+        try {
+            const response = await fetch(this.proxyUrl + encodeURIComponent(url));
+            const data = await response.json();
+            return data.contents;
+        } catch (error) {
+            console.error('Proxy fetch failed:', error);
+            throw error;
+        }
+    }
 
-def organize_by_category(menu_items: List[Dict]) -> Dict:
-    """Organize menu items by category."""
-    categories = {}
-    for item in menu_items:
-        category = item.get('category', 'Other')
-        if category not in categories:
-            categories[category] = []
-        categories[category].append(item)
-    return categories
+    parseMenuData(html) {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        
+        const menuItems = [];
+        
+        // Look for menu items (adjust selectors based on actual site structure)
+        const items = doc.querySelectorAll('.menu-item, .dish, .meal, [class*="menu"], [class*="dish"], .card, .product');
+        
+        items.forEach((item, index) => {
+            const nameEl = item.querySelector('h3, h4, .name, .title, [class*="name"], [class*="title"], strong, b');
+            const descEl = item.querySelector('.description, .desc, .ingredients, p, .text');
+            const priceEl = item.querySelector('.price, [class*="price"], [data-price]');
+            
+            const name = nameEl?.textContent?.trim() || `Menu Item ${index + 1}`;
+            const description = descEl?.textContent?.trim() || '';
+            const priceText = priceEl?.textContent?.trim() || '';
+            const price = this.parsePrice(priceText);
+            
+            // Determine category based on content or position
+            let category = 'Menu';
+            const text = item.textContent.toLowerCase();
+            if (text.includes('vegi') || text.includes('vegetarian')) category = 'Vegi';
+            if (text.includes('hit') || text.includes('special') || text.includes('daily')) category = 'Hit';
+            if (text.includes('frühstück') || text.includes('breakfast')) category = 'Frühstück';
+            
+            if (name.length > 3 && !name.includes('Cookie') && !name.includes('Accept')) {
+                menuItems.push({
+                    name,
+                    description,
+                    price,
+                    category
+                });
+            }
+        });
+        
+        return {
+            restaurant: 'Eurest Kaserne Timeout',
+            location: 'Papiermühlestrasse 15, 3014 Bern',
+            menu_items: menuItems,
+            total_items: menuItems.length,
+            date_info: {
+                scraped_at: new Date().toISOString(),
+                display_date: new Date().toLocaleDateString('de-CH')
+            },
+            url: this.baseUrl
+        };
+    }
+
+    parsePrice(priceText) {
+        if (!priceText) return null;
+        const match = priceText.match(/(\\d+\\.?\\d*)/);
+        return match ? parseFloat(match[1]) : null;
+    }
+
+    async scrapeMenu() {
+        // Check cache first
+        if (this.cache && this.cacheTime && 
+            (Date.now() - this.cacheTime < this.cacheTimeout)) {
+            return this.cache;
+        }
+
+        try {
+            console.log('🔄 Fetching fresh menu data...');
+            const html = await this.fetchWithProxy(this.baseUrl);
+            const menuData = this.parseMenuData(html);
+            
+            // Cache the result
+            this.cache = menuData;
+            this.cacheTime = Date.now();
+            
+            console.log('✅ Menu data updated successfully', menuData);
+            return menuData;
+            
+        } catch (error) {
+            console.error('❌ Failed to fetch menu data:', error);
+            
+            // Return fallback data
+            return {
+                restaurant: 'Eurest Kaserne Timeout',
+                location: 'Papiermühlestrasse 15, 3014 Bern',
+                menu_items: [{
+                    name: 'Menu temporarily unavailable',
+                    description: 'Please visit the restaurant website for current menu information.',
+                    price: null,
+                    category: 'Other'
+                }],
+                total_items: 1,
+                date_info: {
+                    scraped_at: new Date().toISOString(),
+                    display_date: new Date().toLocaleDateString('de-CH')
+                },
+                url: this.baseUrl,
+                error: 'Failed to fetch live data. Please try again later.'
+            };
+        }
+    }
+}
+
+// Menu renderer
+class MenuRenderer {
+    constructor() {
+        this.scraper = new EurestMenuScraper();
+    }
+
+    getCategoryEmoji(category) {
+        const emojiMap = {
+            'Menu': '🍽️',
+            'Vegi': '🥗',
+            'Hit': '⭐',
+            'Frühstück': '🥐',
+            'Other': '🍴'
+        };
+        return emojiMap[category] || '🍴';
+    }
+
+    organizeByCategory(menuItems) {
+        const categories = {};
+        menuItems.forEach(item => {
+            const category = item.category || 'Other';
+            if (!categories[category]) {
+                categories[category] = [];
+            }
+            categories[category].push(item);
+        });
+        return categories;
+    }
+
+    renderLoadingState() {
+        document.getElementById('menuContent').innerHTML = `
+            <div class="loading-state">
+                <div class="loading-spinner"></div>
+                <p>🔄 Loading fresh menu data...</p>
+            </div>
+        `;
+    }
+
+    renderErrorState(error) {
+        document.getElementById('menuContent').innerHTML = `
+            <div class="error-state">
+                <h2>😔 Unable to load menu</h2>
+                <p>${error}</p>
+                <button onclick="menuApp.loadMenu()" class="retry-button">🔄 Try Again</button>
+            </div>
+        `;
+    }
+
+    renderMenu(menuData) {
+        const container = document.getElementById('menuContent');
+        const categories = this.organizeByCategory(menuData.menu_items || []);
+        
+        // Update meta info
+        this.updateMetaInfo(menuData);
+        
+        if (menuData.error && menuData.total_items === 0) {
+            this.renderErrorState(menuData.error);
+            return;
+        }
+
+        if (Object.keys(categories).length === 0) {
+            container.innerHTML = `
+                <div class="no-items">
+                    <h2>😔 No menu items available</h2>
+                    <p>The menu could not be loaded at this time. Please check back later.</p>
+                    <button onclick="menuApp.loadMenu()" class="retry-button">🔄 Refresh</button>
+                </div>
+            `;
+            return;
+        }
+
+        let html = '';
+        const categoryOrder = ['Frühstück', 'Menu', 'Vegi', 'Hit', 'Other'];
+        
+        categoryOrder.forEach(category => {
+            if (!categories[category]) return;
+            
+            const items = categories[category];
+            const emoji = this.getCategoryEmoji(category);
+            
+            html += `
+                <section class="category-section">
+                    <div class="category-header">
+                        <span>${emoji}</span>
+                        <h2>${category.toUpperCase()}</h2>
+                        <span class="category-count">${items.length} items</span>
+                    </div>
+                    
+                    <div class="menu-grid">
+            `;
+            
+            items.forEach(item => {
+                const priceHtml = item.price ? 
+                    `<span class="item-price">CHF ${item.price.toFixed(2)}</span>` : '';
+                
+                html += `
+                    <div class="menu-item">
+                        <div class="item-name">${item.name}</div>
+                        ${item.description ? `<div class="item-description">${item.description}</div>` : ''}
+                        <div class="item-footer">
+                            ${priceHtml}
+                            <span class="item-category">${item.category}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += `
+                    </div>
+                </section>
+            `;
+        });
+
+        container.innerHTML = html;
+        
+        // Re-attach event listeners for mobile interactions
+        this.attachMenuItemListeners();
+    }
+
+    updateMetaInfo(menuData) {
+        const totalItems = menuData.total_items || 0;
+        const prices = (menuData.menu_items || [])
+            .map(item => item.price)
+            .filter(price => price !== null);
+        
+        let priceRange = 'N/A';
+        let avgPrice = 'N/A';
+        
+        if (prices.length > 0) {
+            const minPrice = Math.min(...prices);
+            const maxPrice = Math.max(...prices);
+            const average = prices.reduce((a, b) => a + b, 0) / prices.length;
+            priceRange = `CHF ${minPrice.toFixed(2)} - CHF ${maxPrice.toFixed(2)}`;
+            avgPrice = `CHF ${average.toFixed(2)}`;
+        }
+
+        const scrapedAt = menuData.date_info?.scraped_at || new Date().toISOString();
+        const scrapedFormatted = new Date(scrapedAt).toLocaleString('de-CH');
+
+        const totalEl = document.querySelector('[data-total-items]');
+        const priceEl = document.querySelector('[data-price-stats]');
+        const updatedEl = document.querySelector('[data-updated]');
+        
+        if (totalEl) totalEl.textContent = `${totalItems} menu items`;
+        if (priceEl) priceEl.textContent = `💰 ${priceRange} | Avg: ${avgPrice}`;
+        if (updatedEl) updatedEl.textContent = `Updated: ${scrapedFormatted}`;
+    }
+
+    attachMenuItemListeners() {
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('touchstart', function() {
+                this.style.backgroundColor = 'var(--bg-accent)';
+            });
+            
+            item.addEventListener('touchend', function() {
+                setTimeout(() => {
+                    this.style.backgroundColor = '';
+                }, 150);
+            });
+            
+            item.addEventListener('click', function() {
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
+        });
+    }
+
+    async loadMenu() {
+        this.renderLoadingState();
+        const menuData = await this.scraper.scrapeMenu();
+        this.renderMenu(menuData);
+    }
+}
+
+// Global menu app instance
+const menuApp = new MenuRenderer();
+
+// Auto-refresh functionality
+setInterval(() => {
+    console.log('🔄 Auto-refreshing menu data...');
+    menuApp.loadMenu();
+}, 10 * 60 * 1000); // Refresh every 10 minutes
+'''
 
 
 def generate_html(menu_data: Dict) -> str:
@@ -729,19 +1025,6 @@ def generate_html(menu_data: Dict) -> str:
     
     # Generate the live scraper JavaScript
     live_scraper_js = generate_live_scraper_js()
-    
-    # Get date info
-    scraped_at = menu_data.get('date_info', {}).get('scraped_at', '')
-    display_date = menu_data.get('date_info', {}).get('display_date', '')
-    
-    if scraped_at:
-        try:
-            scraped_dt = datetime.fromisoformat(scraped_at.replace('Z', '+00:00'))
-            scraped_formatted = scraped_dt.strftime('%B %d, %Y at %H:%M UTC')
-        except:
-            scraped_formatted = scraped_at
-    else:
-        scraped_formatted = "Unknown"
     
     # Get website URL for footer
     website_url = menu_data.get('url', 'https://clients.eurest.ch/kaserne/de/Timeout')
@@ -784,7 +1067,7 @@ def generate_html(menu_data: Dict) -> str:
         
         <header class="header">
             <h1>🍽️ {menu_data.get('restaurant', 'Eurest Kaserne Timeout')}</h1>
-            <div class="subtitle">Daily Lunch Menu</div>
+            <div class="subtitle">Daily Lunch Menu - Live Data</div>
             <div class="location">📍 {menu_data.get('location', 'Papiermühlestrasse 15, 3014 Bern')}</div>
         </header>
         
@@ -819,17 +1102,12 @@ def generate_html(menu_data: Dict) -> str:
                     <p>🔄 Loading fresh menu data...</p>
                 </div>
             </div>
-
-    # Add footer
-    website_url = menu_data.get('url', 'https://clients.eurest.ch/kaserne/de/Timeout')
-    
-    html += f"""
         </main>
         
         <footer class="footer">
             <div class="footer-links">
                 <a href="{website_url}" target="_blank" rel="noopener" class="footer-link">🌐 Visit Restaurant Website</a>
-                <a href="javascript:menuApp.loadMenu()" class="footer-link">� Refresh Menu</a>
+                <a href="javascript:menuApp.loadMenu()" class="footer-link">🔄 Refresh Menu</a>
                 <a href="javascript:window.print()" class="footer-link">🖨️ Print Menu</a>
             </div>
             <p>
@@ -1014,305 +1292,6 @@ def generate_manifest() -> str:
 }"""
 
 
-def generate_live_scraper_js() -> str:
-    """Generate JavaScript code to scrape menu data directly in the browser."""
-    return """
-// Live menu scraper - runs in the browser
-class EurestMenuScraper {
-    constructor() {
-        this.baseUrl = 'https://clients.eurest.ch/kaserne/de/Timeout';
-        this.proxyUrl = 'https://api.allorigins.win/get?url=';
-        this.cache = null;
-        this.cacheTime = null;
-        this.cacheTimeout = 5 * 60 * 1000; // 5 minutes
-    }
-
-    async fetchWithProxy(url) {
-        try {
-            const response = await fetch(this.proxyUrl + encodeURIComponent(url));
-            const data = await response.json();
-            return data.contents;
-        } catch (error) {
-            console.error('Proxy fetch failed:', error);
-            throw error;
-        }
-    }
-
-    parseMenuData(html) {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html');
-        
-        const menuItems = [];
-        
-        // Look for menu items (adjust selectors based on actual site structure)
-        const items = doc.querySelectorAll('.menu-item, .dish, .meal, [class*="menu"], [class*="dish"]');
-        
-        items.forEach((item, index) => {
-            const nameEl = item.querySelector('h3, h4, .name, .title, [class*="name"], [class*="title"]');
-            const descEl = item.querySelector('.description, .desc, .ingredients, p');
-            const priceEl = item.querySelector('.price, [class*="price"], [data-price]');
-            
-            const name = nameEl?.textContent?.trim() || `Menu Item ${index + 1}`;
-            const description = descEl?.textContent?.trim() || '';
-            const priceText = priceEl?.textContent?.trim() || '';
-            const price = this.parsePrice(priceText);
-            
-            // Determine category based on content or position
-            let category = 'Menu';
-            const text = item.textContent.toLowerCase();
-            if (text.includes('vegi') || text.includes('vegetarian')) category = 'Vegi';
-            if (text.includes('hit') || text.includes('special')) category = 'Hit';
-            if (text.includes('frühstück') || text.includes('breakfast')) category = 'Frühstück';
-            
-            if (name.length > 3) { // Filter out empty or too short items
-                menuItems.push({
-                    name,
-                    description,
-                    price,
-                    category
-                });
-            }
-        });
-        
-        return {
-            restaurant: 'Eurest Kaserne Timeout',
-            location: 'Papiermühlestrasse 15, 3014 Bern',
-            menu_items: menuItems,
-            total_items: menuItems.length,
-            date_info: {
-                scraped_at: new Date().toISOString(),
-                display_date: new Date().toLocaleDateString('de-CH')
-            },
-            url: this.baseUrl
-        };
-    }
-
-    parsePrice(priceText) {
-        if (!priceText) return null;
-        const match = priceText.match(/(\\d+\\.?\\d*)/);
-        return match ? parseFloat(match[1]) : null;
-    }
-
-    async scrapeMenu() {
-        // Check cache first
-        if (this.cache && this.cacheTime && 
-            (Date.now() - this.cacheTime < this.cacheTimeout)) {
-            return this.cache;
-        }
-
-        try {
-            console.log('🔄 Fetching fresh menu data...');
-            const html = await this.fetchWithProxy(this.baseUrl);
-            const menuData = this.parseMenuData(html);
-            
-            // Cache the result
-            this.cache = menuData;
-            this.cacheTime = Date.now();
-            
-            console.log('✅ Menu data updated successfully');
-            return menuData;
-            
-        } catch (error) {
-            console.error('❌ Failed to fetch menu data:', error);
-            
-            // Return fallback data
-            return {
-                restaurant: 'Eurest Kaserne Timeout',
-                location: 'Papiermühlestrasse 15, 3014 Bern',
-                menu_items: [],
-                total_items: 0,
-                date_info: {
-                    scraped_at: new Date().toISOString(),
-                    display_date: new Date().toLocaleDateString('de-CH')
-                },
-                url: this.baseUrl,
-                error: 'Failed to fetch live data. Please try again later.'
-            };
-        }
-    }
-}
-
-// Menu renderer
-class MenuRenderer {
-    constructor() {
-        this.scraper = new EurestMenuScraper();
-    }
-
-    getCategoryEmoji(category) {
-        const emojiMap = {
-            'Menu': '🍽️',
-            'Vegi': '🥗',
-            'Hit': '⭐',
-            'Frühstück': '🥐',
-            'Other': '🍴'
-        };
-        return emojiMap[category] || '🍴';
-    }
-
-    organizeByCategory(menuItems) {
-        const categories = {};
-        menuItems.forEach(item => {
-            const category = item.category || 'Other';
-            if (!categories[category]) {
-                categories[category] = [];
-            }
-            categories[category].push(item);
-        });
-        return categories;
-    }
-
-    renderLoadingState() {
-        document.getElementById('menuContent').innerHTML = `
-            <div class="loading-state">
-                <div class="loading-spinner"></div>
-                <p>🔄 Loading fresh menu data...</p>
-            </div>
-        `;
-    }
-
-    renderErrorState(error) {
-        document.getElementById('menuContent').innerHTML = `
-            <div class="error-state">
-                <h2>😔 Unable to load menu</h2>
-                <p>${error}</p>
-                <button onclick="menuApp.loadMenu()" class="retry-button">🔄 Try Again</button>
-            </div>
-        `;
-    }
-
-    renderMenu(menuData) {
-        const container = document.getElementById('menuContent');
-        const categories = this.organizeByCategory(menuData.menu_items || []);
-        
-        // Update meta info
-        this.updateMetaInfo(menuData);
-        
-        if (menuData.error) {
-            this.renderErrorState(menuData.error);
-            return;
-        }
-
-        if (Object.keys(categories).length === 0) {
-            container.innerHTML = `
-                <div class="no-items">
-                    <h2>😔 No menu items available</h2>
-                    <p>The menu could not be loaded at this time. Please check back later.</p>
-                    <button onclick="menuApp.loadMenu()" class="retry-button">🔄 Refresh</button>
-                </div>
-            `;
-            return;
-        }
-
-        let html = '';
-        const categoryOrder = ['Frühstück', 'Menu', 'Vegi', 'Hit', 'Other'];
-        
-        categoryOrder.forEach(category => {
-            if (!categories[category]) return;
-            
-            const items = categories[category];
-            const emoji = this.getCategoryEmoji(category);
-            
-            html += `
-                <section class="category-section">
-                    <div class="category-header">
-                        <span>${emoji}</span>
-                        <h2>${category.toUpperCase()}</h2>
-                        <span class="category-count">${items.length} items</span>
-                    </div>
-                    
-                    <div class="menu-grid">
-            `;
-            
-            items.forEach(item => {
-                const priceHtml = item.price ? 
-                    `<span class="item-price">CHF ${item.price.toFixed(2)}</span>` : '';
-                
-                html += `
-                    <div class="menu-item">
-                        <div class="item-name">${item.name}</div>
-                        ${item.description ? `<div class="item-description">${item.description}</div>` : ''}
-                        <div class="item-footer">
-                            ${priceHtml}
-                            <span class="item-category">${item.category}</span>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            html += `
-                    </div>
-                </section>
-            `;
-        });
-
-        container.innerHTML = html;
-        
-        // Re-attach event listeners for mobile interactions
-        this.attachMenuItemListeners();
-    }
-
-    updateMetaInfo(menuData) {
-        const totalItems = menuData.total_items || 0;
-        const prices = (menuData.menu_items || [])
-            .map(item => item.price)
-            .filter(price => price !== null);
-        
-        let priceRange = 'N/A';
-        let avgPrice = 'N/A';
-        
-        if (prices.length > 0) {
-            const minPrice = Math.min(...prices);
-            const maxPrice = Math.max(...prices);
-            const average = prices.reduce((a, b) => a + b, 0) / prices.length;
-            priceRange = `CHF ${minPrice.toFixed(2)} - CHF ${maxPrice.toFixed(2)}`;
-            avgPrice = `CHF ${average.toFixed(2)}`;
-        }
-
-        const scrapedAt = menuData.date_info?.scraped_at || new Date().toISOString();
-        const scrapedFormatted = new Date(scrapedAt).toLocaleString('de-CH');
-
-        document.querySelector('[data-total-items]').textContent = `${totalItems} menu items`;
-        document.querySelector('[data-price-stats]').textContent = `💰 ${priceRange} | Avg: ${avgPrice}`;
-        document.querySelector('[data-updated]').textContent = `Updated: ${scrapedFormatted}`;
-    }
-
-    attachMenuItemListeners() {
-        document.querySelectorAll('.menu-item').forEach(item => {
-            item.addEventListener('touchstart', function() {
-                this.style.backgroundColor = 'var(--bg-accent)';
-            });
-            
-            item.addEventListener('touchend', function() {
-                setTimeout(() => {
-                    this.style.backgroundColor = '';
-                }, 150);
-            });
-            
-            item.addEventListener('click', function() {
-                this.style.transform = 'scale(0.98)';
-                setTimeout(() => {
-                    this.style.transform = '';
-                }, 150);
-            });
-        });
-    }
-
-    async loadMenu() {
-        this.renderLoadingState();
-        const menuData = await this.scraper.scrapeMenu();
-        this.renderMenu(menuData);
-    }
-}
-
-// Global menu app instance
-const menuApp = new MenuRenderer();
-
-// Auto-refresh functionality
-setInterval(() => {
-    console.log('🔄 Auto-refreshing menu data...');
-    menuApp.loadMenu();
-}, 10 * 60 * 1000); // Refresh every 10 minutes
-"""
 def generate_service_worker() -> str:
     """Generate service worker for PWA functionality."""
     return """const CACHE_NAME = 'eurest-menu-v1';
@@ -1369,39 +1348,43 @@ def main():
         sys.exit(1)
     
     json_file = sys.argv[1]
-    print(f"Generating website from {json_file}...")
+    print(f"Generating live PWA website from {json_file}...")
     
-    # Load menu data
+    # Load menu data (used for fallback)
     menu_data = load_menu_data(json_file)
     
-    # Generate HTML
+    # Generate HTML with live scraping
     html_content = generate_html(menu_data)
+    
+    # Generate PWA files
+    manifest_content = generate_manifest()
+    sw_content = generate_service_worker()
     
     # Save HTML file
     with open('index.html', 'w', encoding='utf-8') as f:
         f.write(html_content)
     
-    # Save manifest file
+    # Save PWA files
     with open('manifest.json', 'w', encoding='utf-8') as f:
-        f.write(generate_manifest())
-    
-    # Save service worker file
+        f.write(manifest_content)
+        
     with open('sw.js', 'w', encoding='utf-8') as f:
-        f.write(generate_service_worker())
+        f.write(sw_content)
     
-    print("✅ PWA website generated successfully!")
+    print("✅ Live PWA website generated successfully!")
     print("📁 Files created:")
-    print("   - index.html (main website)")
+    print("   - index.html (main website with live scraper)")
     print("   - manifest.json (PWA manifest)")
     print("   - sw.js (service worker)")
-    print(f"   - {json_file} (source data)")
+    print(f"   - {json_file} (source data - used as fallback)")
     print("")
-    print("📱 PWA Features:")
-    print("   - Installable as app on iOS/Android")
-    print("   - Offline support")
-    print("   - App-like experience")
-    print("   - Touch-optimized interface")
-    print("   - Pull-to-refresh functionality")
+    print("🔴 LIVE Features:")
+    print("   - Real-time menu scraping in browser")
+    print("   - Auto-refresh every 10 minutes")
+    print("   - Pull-to-refresh on mobile")
+    print("   - No server required - runs entirely in browser")
+    print("   - Dark mode with system detection")
+    print("   - Installable as PWA on mobile devices")
     print("")
     print("🖼️  Note: Add app icons for full PWA experience:")
     print("   - icon-16.png, icon-32.png (favicon)")
@@ -1409,10 +1392,11 @@ def main():
     print("   - icon-192.png, icon-512.png (Android)")
     print("")
     print("📲 Installation: Open in Safari/Chrome and tap 'Add to Home Screen'")
+    print("🌐 The website will now fetch fresh menu data every time it loads!")
     
     # Print some statistics
     total_items = menu_data.get('total_items', 0)
-    print(f"📊 Menu contains {total_items} items")
+    print(f"📊 Fallback data contains {total_items} items")
 
 
 if __name__ == "__main__":
