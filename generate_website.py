@@ -24,7 +24,77 @@ def load_menu_data(json_file: str) -> Dict:
 def generate_css() -> str:
     """Generate CSS styles for the website."""
     return """
-/* Minimalistic Futuristic Design */
+/* Minimalistic Futuristic Design with Dark Mode */
+:root {
+    /* Light mode colors */
+    --bg-primary: #fafafa;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #f9fafb;
+    --bg-accent: #f1f5f9;
+    --text-primary: #1a1a1a;
+    --text-secondary: #6b7280;
+    --text-tertiary: #9ca3af;
+    --border-primary: #e8e8e8;
+    --border-secondary: #f3f4f6;
+    --accent-color: #2563eb;
+    --accent-hover: #1d4ed8;
+    --shadow-light: rgba(0, 0, 0, 0.04);
+    --shadow-medium: rgba(0, 0, 0, 0.02);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        /* Dark mode colors */
+        --bg-primary: #0f0f0f;
+        --bg-secondary: #1a1a1a;
+        --bg-tertiary: #262626;
+        --bg-accent: #2a2a2a;
+        --text-primary: #f5f5f5;
+        --text-secondary: #a3a3a3;
+        --text-tertiary: #737373;
+        --border-primary: #404040;
+        --border-secondary: #333333;
+        --accent-color: #3b82f6;
+        --accent-hover: #60a5fa;
+        --shadow-light: rgba(0, 0, 0, 0.3);
+        --shadow-medium: rgba(0, 0, 0, 0.2);
+    }
+}
+
+[data-theme="dark"] {
+    /* Force dark mode */
+    --bg-primary: #0f0f0f;
+    --bg-secondary: #1a1a1a;
+    --bg-tertiary: #262626;
+    --bg-accent: #2a2a2a;
+    --text-primary: #f5f5f5;
+    --text-secondary: #a3a3a3;
+    --text-tertiary: #737373;
+    --border-primary: #404040;
+    --border-secondary: #333333;
+    --accent-color: #3b82f6;
+    --accent-hover: #60a5fa;
+    --shadow-light: rgba(0, 0, 0, 0.3);
+    --shadow-medium: rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="light"] {
+    /* Force light mode */
+    --bg-primary: #fafafa;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #f9fafb;
+    --bg-accent: #f1f5f9;
+    --text-primary: #1a1a1a;
+    --text-secondary: #6b7280;
+    --text-tertiary: #9ca3af;
+    --border-primary: #e8e8e8;
+    --border-secondary: #f3f4f6;
+    --accent-color: #2563eb;
+    --accent-hover: #1d4ed8;
+    --shadow-light: rgba(0, 0, 0, 0.04);
+    --shadow-medium: rgba(0, 0, 0, 0.02);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -34,31 +104,58 @@ def generate_css() -> str:
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', 'SF Pro Display', system-ui, sans-serif;
     line-height: 1.5;
-    color: #1a1a1a;
-    background: #fafafa;
+    color: var(--text-primary);
+    background: var(--bg-primary);
     min-height: 100vh;
     padding: 24px;
     font-weight: 400;
     letter-spacing: -0.01em;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    background: #ffffff;
+    background: var(--bg-secondary);
     border-radius: 2px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+    box-shadow: 0 1px 3px var(--shadow-light), 0 1px 2px var(--shadow-medium);
     overflow: hidden;
-    border: 1px solid #e8e8e8;
+    border: 1px solid var(--border-primary);
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dark-mode-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 20px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px var(--shadow-light);
+}
+
+.dark-mode-toggle:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px var(--shadow-light);
 }
 
 .header {
-    background: #ffffff;
-    color: #1a1a1a;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
     padding: 48px 32px;
     text-align: center;
-    border-bottom: 1px solid #e8e8e8;
+    border-bottom: 1px solid var(--border-primary);
     position: relative;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 .header::after {
@@ -69,7 +166,8 @@ body {
     transform: translateX(-50%);
     width: 40px;
     height: 2px;
-    background: #2563eb;
+    background: var(--accent-color);
+    transition: background-color 0.3s ease;
 }
 
 .header h1 {
@@ -77,31 +175,35 @@ body {
     margin-bottom: 8px;
     font-weight: 600;
     letter-spacing: -0.025em;
-    color: #1a1a1a;
+    color: var(--text-primary);
+    transition: color 0.3s ease;
 }
 
 .header .subtitle {
     font-size: 1rem;
-    color: #6b7280;
+    color: var(--text-secondary);
     margin-bottom: 12px;
     font-weight: 400;
+    transition: color 0.3s ease;
 }
 
 .header .location {
     font-size: 0.875rem;
-    color: #9ca3af;
+    color: var(--text-tertiary);
     font-weight: 400;
+    transition: color 0.3s ease;
 }
 
 .meta-info {
-    background: #f9fafb;
+    background: var(--bg-tertiary);
     padding: 20px 32px;
-    border-bottom: 1px solid #e8e8e8;
+    border-bottom: 1px solid var(--border-primary);
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
     gap: 16px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .meta-item {
@@ -109,8 +211,9 @@ body {
     align-items: center;
     gap: 8px;
     font-size: 0.875rem;
-    color: #6b7280;
+    color: var(--text-secondary);
     font-weight: 400;
+    transition: color 0.3s ease;
 }
 
 .meta-item .emoji {
@@ -119,17 +222,20 @@ body {
 }
 
 .price-stats {
-    background: #f1f5f9;
-    color: #475569;
+    background: var(--bg-accent);
+    color: var(--text-secondary);
     padding: 8px 16px;
     border-radius: 6px;
     font-weight: 500;
     font-size: 0.875rem;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--border-secondary);
+    transition: all 0.3s ease;
 }
 
 .content {
     padding: 40px 32px;
+    background: var(--bg-secondary);
+    transition: background-color 0.3s ease;
 }
 
 .category-section {
@@ -137,15 +243,16 @@ body {
 }
 
 .category-header {
-    background: #ffffff;
-    color: #1a1a1a;
+    background: transparent;
+    color: var(--text-primary);
     padding: 20px 0;
     margin-bottom: 24px;
     display: flex;
     align-items: center;
     gap: 12px;
-    border-bottom: 1px solid #e8e8e8;
+    border-bottom: 1px solid var(--border-primary);
     position: relative;
+    transition: color 0.3s ease, border-color 0.3s ease;
 }
 
 .category-header::after {
@@ -155,7 +262,8 @@ body {
     left: 0;
     width: 48px;
     height: 2px;
-    background: #2563eb;
+    background: var(--accent-color);
+    transition: background-color 0.3s ease;
 }
 
 .category-header h2 {
@@ -163,16 +271,19 @@ body {
     margin: 0;
     font-weight: 600;
     letter-spacing: -0.01em;
+    color: var(--text-primary);
+    transition: color 0.3s ease;
 }
 
 .category-count {
-    background: #f3f4f6;
-    color: #6b7280;
+    background: var(--bg-accent);
+    color: var(--text-secondary);
     padding: 4px 12px;
     border-radius: 4px;
     font-size: 0.75rem;
     font-weight: 500;
     margin-left: auto;
+    transition: all 0.3s ease;
 }
 
 .menu-grid {
@@ -182,8 +293,8 @@ body {
 }
 
 .menu-item {
-    background: #ffffff;
-    border: 1px solid #e8e8e8;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
     border-radius: 1px;
     padding: 24px;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -191,25 +302,28 @@ body {
 }
 
 .menu-item:hover {
-    border-color: #d1d5db;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    border-color: var(--border-secondary);
+    box-shadow: 0 2px 8px var(--shadow-light);
+    transform: translateY(-1px);
 }
 
 .item-name {
     font-size: 1.125rem;
     font-weight: 600;
-    color: #1a1a1a;
+    color: var(--text-primary);
     margin-bottom: 8px;
     line-height: 1.4;
     letter-spacing: -0.01em;
+    transition: color 0.3s ease;
 }
 
 .item-description {
-    color: #6b7280;
+    color: var(--text-secondary);
     margin-bottom: 20px;
     font-size: 0.875rem;
     line-height: 1.5;
     font-weight: 400;
+    transition: color 0.3s ease;
 }
 
 .item-footer {
@@ -218,34 +332,38 @@ body {
     align-items: center;
     margin-top: 20px;
     padding-top: 20px;
-    border-top: 1px solid #f3f4f6;
+    border-top: 1px solid var(--border-secondary);
+    transition: border-color 0.3s ease;
 }
 
 .item-price {
     font-size: 1.25rem;
     font-weight: 600;
-    color: #1a1a1a;
+    color: var(--text-primary);
     letter-spacing: -0.01em;
+    transition: color 0.3s ease;
 }
 
 .item-category {
-    background: #f8fafc;
-    color: #475569;
+    background: var(--bg-accent);
+    color: var(--text-secondary);
     padding: 6px 12px;
     border-radius: 4px;
     font-size: 0.75rem;
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.025em;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--border-secondary);
+    transition: all 0.3s ease;
 }
 
 .footer {
-    background: #f9fafb;
-    color: #6b7280;
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
     padding: 32px;
     text-align: center;
-    border-top: 1px solid #e8e8e8;
+    border-top: 1px solid var(--border-primary);
+    transition: all 0.3s ease;
 }
 
 .footer-links {
@@ -257,7 +375,7 @@ body {
 }
 
 .footer-link {
-    color: #2563eb;
+    color: var(--accent-color);
     text-decoration: none;
     font-weight: 500;
     font-size: 0.875rem;
@@ -265,39 +383,50 @@ body {
 }
 
 .footer-link:hover {
-    color: #1d4ed8;
+    color: var(--accent-hover);
 }
 
 .no-items {
     text-align: center;
     padding: 64px 32px;
-    color: #9ca3af;
+    color: var(--text-tertiary);
+    transition: color 0.3s ease;
 }
 
 .no-items h2 {
-    color: #6b7280;
+    color: var(--text-secondary);
     font-size: 1.25rem;
     margin-bottom: 8px;
     font-weight: 600;
+    transition: color 0.3s ease;
 }
 
 .refresh-info {
-    background: #fffbeb;
-    border: 1px solid #fed7aa;
-    color: #92400e;
+    background: var(--bg-accent);
+    border: 1px solid var(--border-secondary);
+    color: var(--text-secondary);
     padding: 16px;
     border-radius: 6px;
     margin-bottom: 32px;
     text-align: center;
     font-size: 0.875rem;
     font-weight: 400;
+    transition: all 0.3s ease;
 }
 
 /* Responsive design and mobile optimizations */
 @media (max-width: 768px) {
     body {
         padding: 0;
-        background: #ffffff;
+        background: var(--bg-secondary);
+    }
+    
+    .dark-mode-toggle {
+        top: 16px;
+        right: 16px;
+        width: 44px;
+        height: 44px;
+        font-size: 18px;
     }
     
     .container {
@@ -380,7 +509,7 @@ body {
     }
     
     .menu-item:active {
-        background-color: #f8fafc;
+        background-color: var(--bg-accent);
     }
     
     .item-name {
@@ -594,6 +723,10 @@ def generate_html(menu_data: Dict) -> str:
 </head>
 <body>
     <div class="container">
+        <button class="dark-mode-toggle" id="darkModeToggle" title="Toggle dark mode">
+            <span id="darkModeIcon">🌙</span>
+        </button>
+        
         <header class="header">
             <h1>🍽️ {menu_data.get('restaurant', 'Eurest Kaserne Timeout')}</h1>
             <div class="subtitle">Daily Lunch Menu</div>
@@ -706,6 +839,64 @@ def generate_html(menu_data: Dict) -> str:
     <script>
         // Progressive Web App functionality
         document.addEventListener('DOMContentLoaded', function() {{
+            // Dark mode functionality
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const darkModeIcon = document.getElementById('darkModeIcon');
+            const html = document.documentElement;
+            
+            // Check for saved theme or default to auto
+            const savedTheme = localStorage.getItem('theme');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            // Initialize theme
+            if (savedTheme) {{
+                html.setAttribute('data-theme', savedTheme);
+                updateIcon(savedTheme);
+            }} else if (systemPrefersDark) {{
+                updateIcon('dark');
+            }} else {{
+                updateIcon('light');
+            }}
+            
+            function updateIcon(theme) {{
+                if (theme === 'dark' || (!theme && systemPrefersDark)) {{
+                    darkModeIcon.textContent = '☀️';
+                }} else {{
+                    darkModeIcon.textContent = '🌙';
+                }}
+            }}
+            
+            darkModeToggle.addEventListener('click', function() {{
+                const currentTheme = html.getAttribute('data-theme');
+                let newTheme;
+                
+                if (currentTheme === 'dark') {{
+                    newTheme = 'light';
+                }} else if (currentTheme === 'light') {{
+                    newTheme = 'dark';
+                }} else {{
+                    // Auto mode - toggle opposite of system preference
+                    newTheme = systemPrefersDark ? 'light' : 'dark';
+                }}
+                
+                html.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                updateIcon(newTheme);
+                
+                // Add feedback animation
+                darkModeToggle.style.transform = 'scale(0.9)';
+                setTimeout(() => {{
+                    darkModeToggle.style.transform = '';
+                }}, 150);
+            }});
+            
+            // Listen for system theme changes
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {{
+                if (!localStorage.getItem('theme')) {{
+                    updateIcon(e.matches ? 'dark' : 'light');
+                }}
+            }});
+            
             // Register service worker
             if ('serviceWorker' in navigator) {{
                 navigator.serviceWorker.register('./sw.js')
@@ -726,7 +917,7 @@ def generate_html(menu_data: Dict) -> str:
             document.querySelectorAll('.menu-item').forEach(item => {{
                 // Touch feedback
                 item.addEventListener('touchstart', function() {{
-                    this.style.backgroundColor = '#f8fafc';
+                    this.style.backgroundColor = 'var(--bg-accent)';
                 }});
                 
                 item.addEventListener('touchend', function() {{
@@ -821,7 +1012,16 @@ def generate_manifest() -> str:
                 }
             ]
         }
-    ]
+    ],
+    "edge_side_panel": {
+        "preferred_width": 400
+    },
+    "user_preferences": {
+        "color_scheme_dark": {
+            "theme_color": "#1a1a1a",
+            "background_color": "#0f0f0f"
+        }
+    }
 }"""
 
 
