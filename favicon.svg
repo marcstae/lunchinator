@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Background -->
+  <rect width="512" height="512" rx="96" fill="#3b82f6"/>
+  
+  <!-- Plate circle -->
+  <circle cx="256" cy="256" r="180" fill="#f9fafb" stroke="#1f2937" stroke-width="8"/>
+  
+  <!-- Fork -->
+  <g transform="translate(180, 200)">
+    <!-- Fork handle -->
+    <rect x="15" y="80" width="12" height="120" rx="6" fill="#1f2937"/>
+    <!-- Fork tines -->
+    <rect x="8" y="50" width="6" height="40" rx="3" fill="#1f2937"/>
+    <rect x="16" y="50" width="6" height="40" rx="3" fill="#1f2937"/>
+    <rect x="24" y="50" width="6" height="40" rx="3" fill="#1f2937"/>
+  </g>
+  
+  <!-- Knife -->
+  <g transform="translate(290, 200)">
+    <!-- Knife handle -->
+    <rect x="15" y="80" width="12" height="120" rx="6" fill="#1f2937"/>
+    <!-- Knife blade -->
+    <path d="M15 50 L27 50 L27 85 L15 85 Z" fill="#94a3b8"/>
+    <path d="M21 30 L27 50 L15 50 Z" fill="#cbd5e1"/>
+  </g>
+  
+  <!-- Food item (stylized) -->
+  <ellipse cx="256" cy="240" rx="60" ry="25" fill="#10b981"/>
+  <ellipse cx="240" cy="250" rx="35" ry="15" fill="#34d399"/>
+  <ellipse cx="275" cy="255" rx="25" ry="12" fill="#f59e0b"/>
+</svg>
