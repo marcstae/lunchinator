@@ -24,7 +24,7 @@ def load_menu_data(json_file: str) -> Dict:
 def generate_css() -> str:
     """Generate CSS styles for the website."""
     return """
-/* Modern, clean styling for the menu website */
+/* Minimalistic Futuristic Design */
 * {
     margin: 0;
     padding: 0;
@@ -32,238 +32,450 @@ def generate_css() -> str:
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    line-height: 1.6;
-    color: #333;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', 'SF Pro Display', system-ui, sans-serif;
+    line-height: 1.5;
+    color: #1a1a1a;
+    background: #fafafa;
     min-height: 100vh;
-    padding: 20px;
+    padding: 24px;
+    font-weight: 400;
+    letter-spacing: -0.01em;
 }
 
 .container {
-    max-width: 1000px;
+    max-width: 1200px;
     margin: 0 auto;
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 20px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    background: #ffffff;
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
     overflow: hidden;
+    border: 1px solid #e8e8e8;
 }
 
 .header {
-    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
-    color: white;
-    padding: 30px;
+    background: #ffffff;
+    color: #1a1a1a;
+    padding: 48px 32px;
     text-align: center;
+    border-bottom: 1px solid #e8e8e8;
+    position: relative;
+}
+
+.header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 2px;
+    background: #2563eb;
 }
 
 .header h1 {
-    font-size: 2.5em;
-    margin-bottom: 10px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    font-size: 2.25rem;
+    margin-bottom: 8px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    color: #1a1a1a;
 }
 
 .header .subtitle {
-    font-size: 1.2em;
-    opacity: 0.9;
-    margin-bottom: 10px;
+    font-size: 1rem;
+    color: #6b7280;
+    margin-bottom: 12px;
+    font-weight: 400;
 }
 
 .header .location {
-    font-size: 1em;
-    opacity: 0.8;
+    font-size: 0.875rem;
+    color: #9ca3af;
+    font-weight: 400;
 }
 
 .meta-info {
-    background: #f8f9fa;
-    padding: 20px 30px;
-    border-bottom: 1px solid #e9ecef;
+    background: #f9fafb;
+    padding: 20px 32px;
+    border-bottom: 1px solid #e8e8e8;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: 15px;
+    gap: 16px;
 }
 
 .meta-item {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 0.95em;
-    color: #666;
+    font-size: 0.875rem;
+    color: #6b7280;
+    font-weight: 400;
 }
 
 .meta-item .emoji {
-    font-size: 1.2em;
+    font-size: 1rem;
+    opacity: 0.8;
 }
 
 .price-stats {
-    background: #e3f2fd;
-    color: #1565c0;
-    padding: 10px 15px;
-    border-radius: 10px;
-    font-weight: 600;
+    background: #f1f5f9;
+    color: #475569;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 0.875rem;
+    border: 1px solid #e2e8f0;
 }
 
 .content {
-    padding: 30px;
+    padding: 40px 32px;
 }
 
 .category-section {
-    margin-bottom: 40px;
+    margin-bottom: 48px;
 }
 
 .category-header {
-    background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
-    color: white;
-    padding: 15px 25px;
-    border-radius: 15px;
-    margin-bottom: 20px;
+    background: #ffffff;
+    color: #1a1a1a;
+    padding: 20px 0;
+    margin-bottom: 24px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
+    border-bottom: 1px solid #e8e8e8;
+    position: relative;
+}
+
+.category-header::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 48px;
+    height: 2px;
+    background: #2563eb;
 }
 
 .category-header h2 {
-    font-size: 1.4em;
+    font-size: 1.125rem;
     margin: 0;
+    font-weight: 600;
+    letter-spacing: -0.01em;
 }
 
 .category-count {
-    background: rgba(255, 255, 255, 0.2);
-    padding: 5px 10px;
-    border-radius: 20px;
-    font-size: 0.9em;
+    background: #f3f4f6;
+    color: #6b7280;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-left: auto;
 }
 
 .menu-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
 }
 
 .menu-item {
-    background: white;
-    border: 1px solid #e9ecef;
-    border-radius: 15px;
-    padding: 20px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: #ffffff;
+    border: 1px solid #e8e8e8;
+    border-radius: 1px;
+    padding: 24px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
 }
 
 .menu-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    border-color: #d1d5db;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .item-name {
-    font-size: 1.3em;
-    font-weight: 700;
-    color: #2d3436;
-    margin-bottom: 10px;
-    line-height: 1.3;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
 }
 
 .item-description {
-    color: #636e72;
-    margin-bottom: 15px;
-    font-size: 0.95em;
+    color: #6b7280;
+    margin-bottom: 20px;
+    font-size: 0.875rem;
     line-height: 1.5;
+    font-weight: 400;
 }
 
 .item-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 15px;
-    padding-top: 15px;
-    border-top: 1px solid #f1f3f4;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #f3f4f6;
 }
 
 .item-price {
-    font-size: 1.4em;
-    font-weight: 700;
-    color: #00b894;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    letter-spacing: -0.01em;
 }
 
 .item-category {
-    background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
-    color: white;
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 0.85em;
-    font-weight: 600;
+    background: #f8fafc;
+    color: #475569;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.025em;
+    border: 1px solid #e2e8f0;
 }
 
 .footer {
-    background: #2d3436;
-    color: white;
-    padding: 25px 30px;
+    background: #f9fafb;
+    color: #6b7280;
+    padding: 32px;
     text-align: center;
+    border-top: 1px solid #e8e8e8;
 }
 
 .footer-links {
     display: flex;
     justify-content: center;
-    gap: 20px;
-    margin-bottom: 15px;
+    gap: 32px;
+    margin-bottom: 20px;
     flex-wrap: wrap;
 }
 
 .footer-link {
-    color: #74b9ff;
+    color: #2563eb;
     text-decoration: none;
-    transition: color 0.3s ease;
+    font-weight: 500;
+    font-size: 0.875rem;
+    transition: color 0.2s ease;
 }
 
 .footer-link:hover {
-    color: #0984e3;
+    color: #1d4ed8;
 }
 
 .no-items {
     text-align: center;
-    padding: 40px;
-    color: #666;
-    font-style: italic;
+    padding: 64px 32px;
+    color: #9ca3af;
+}
+
+.no-items h2 {
+    color: #6b7280;
+    font-size: 1.25rem;
+    margin-bottom: 8px;
+    font-weight: 600;
 }
 
 .refresh-info {
-    background: #fff3cd;
-    border: 1px solid #ffeaa7;
-    color: #856404;
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 20px;
+    background: #fffbeb;
+    border: 1px solid #fed7aa;
+    color: #92400e;
+    padding: 16px;
+    border-radius: 6px;
+    margin-bottom: 32px;
     text-align: center;
+    font-size: 0.875rem;
+    font-weight: 400;
 }
 
-/* Responsive design */
+/* Responsive design and mobile optimizations */
 @media (max-width: 768px) {
     body {
-        padding: 10px;
+        padding: 0;
+        background: #ffffff;
+    }
+    
+    .container {
+        border-radius: 0;
+        border: none;
+        box-shadow: none;
+        min-height: 100vh;
+    }
+    
+    .header {
+        padding: 20px 20px 32px 20px;
+        /* Account for iOS status bar */
+        padding-top: max(20px, env(safe-area-inset-top));
     }
     
     .header h1 {
-        font-size: 2em;
+        font-size: 1.75rem;
+    }
+    
+    .header .subtitle {
+        font-size: 0.9rem;
+    }
+    
+    .header .location {
+        font-size: 0.8rem;
     }
     
     .meta-info {
         flex-direction: column;
         text-align: center;
+        padding: 16px 20px;
+        gap: 12px;
+    }
+    
+    .meta-item {
+        font-size: 0.8rem;
+    }
+    
+    .price-stats {
+        font-size: 0.8rem;
+        padding: 6px 12px;
     }
     
     .content {
-        padding: 20px;
+        padding: 24px 20px;
+        padding-bottom: max(24px, env(safe-area-inset-bottom));
+    }
+    
+    .category-section {
+        margin-bottom: 32px;
+    }
+    
+    .category-header {
+        padding: 16px 0;
+        margin-bottom: 16px;
+    }
+    
+    .category-header h2 {
+        font-size: 1rem;
+    }
+    
+    .category-count {
+        font-size: 0.7rem;
+        padding: 3px 8px;
     }
     
     .menu-grid {
         grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .menu-item {
+        padding: 20px;
+        /* Better touch targets */
+        min-height: 44px;
+        cursor: pointer;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        user-select: none;
+        position: relative;
+    }
+    
+    .menu-item:active {
+        background-color: #f8fafc;
+    }
+    
+    .item-name {
+        font-size: 1rem;
+        margin-bottom: 6px;
+    }
+    
+    .item-description {
+        font-size: 0.8rem;
+        margin-bottom: 16px;
+        line-height: 1.4;
+    }
+    
+    .item-footer {
+        margin-top: 16px;
+        padding-top: 16px;
+    }
+    
+    .item-price {
+        font-size: 1.1rem;
+    }
+    
+    .item-category {
+        font-size: 0.7rem;
+        padding: 4px 8px;
+    }
+    
+    .footer {
+        padding: 24px 20px;
+        padding-bottom: max(24px, env(safe-area-inset-bottom));
     }
     
     .footer-links {
         flex-direction: column;
-        gap: 10px;
+        gap: 12px;
+    }
+    
+    .footer-link {
+        font-size: 0.8rem;
+        padding: 8px;
+        /* Better touch targets */
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .refresh-info {
+        margin: 16px 20px 24px 20px;
+        padding: 12px;
+        font-size: 0.8rem;
+    }
+    
+    .no-items {
+        padding: 48px 20px;
+    }
+}
+
+/* iOS specific styles */
+@supports (-webkit-touch-callout: none) {
+    body {
+        /* Disable iOS bounce scroll */
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+    
+    .container {
+        height: 100vh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* iOS safe area support */
+    .header {
+        padding-top: max(20px, env(safe-area-inset-top));
+    }
+    
+    .footer {
+        padding-bottom: max(24px, env(safe-area-inset-bottom));
+    }
+}
+
+/* Touch optimizations */
+@media (pointer: coarse) {
+    .menu-item {
+        padding: 24px;
+        border-radius: 8px;
+    }
+    
+    .footer-link,
+    .menu-item {
+        /* Ensure minimum touch target size */
+        min-height: 44px;
     }
 }
 
@@ -277,12 +489,18 @@ body {
     .container {
         box-shadow: none;
         border-radius: 0;
+        border: none;
     }
     
     .menu-item {
         break-inside: avoid;
         box-shadow: none;
-        border: 1px solid #ddd;
+        border: 1px solid #e8e8e8;
+    }
+    
+    .header::after,
+    .category-header::after {
+        display: none;
     }
 }
 """
@@ -348,10 +566,30 @@ def generate_html(menu_data: Dict) -> str:
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Eurest Kaserne Timeout - Daily Menu</title>
     <meta name="description" content="Daily lunch menu from Eurest Kaserne Timeout restaurant in Bern, Switzerland">
     <meta name="keywords" content="Eurest, Kaserne, Timeout, Bern, lunch, menu, restaurant">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="application-name" content="Eurest Menu">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Eurest Menu">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#2563eb">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="./manifest.json">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="./icon-152.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="./icon-120.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./icon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./icon-16.png">
+    
     <style>{generate_css()}</style>
 </head>
 <body>
@@ -466,21 +704,67 @@ def generate_html(menu_data: Dict) -> str:
     </div>
     
     <script>
-        // Simple JavaScript for enhanced functionality
+        // Progressive Web App functionality
         document.addEventListener('DOMContentLoaded', function() {{
+            // Register service worker
+            if ('serviceWorker' in navigator) {{
+                navigator.serviceWorker.register('./sw.js')
+                    .then(registration => {{
+                        console.log('SW registered successfully');
+                    }})
+                    .catch(error => {{
+                        console.log('SW registration failed');
+                    }});
+            }}
+            
             // Add current time display
             const now = new Date();
             const timeStr = now.toLocaleString('de-CH');
             console.log('Page loaded at:', timeStr);
             
-            // Add click tracking for menu items (optional)
+            // Enhanced mobile interactions
             document.querySelectorAll('.menu-item').forEach(item => {{
+                // Touch feedback
+                item.addEventListener('touchstart', function() {{
+                    this.style.backgroundColor = '#f8fafc';
+                }});
+                
+                item.addEventListener('touchend', function() {{
+                    setTimeout(() => {{
+                        this.style.backgroundColor = '';
+                    }}, 150);
+                }});
+                
+                // Click animation
                 item.addEventListener('click', function() {{
-                    this.style.transform = 'scale(1.02)';
+                    this.style.transform = 'scale(0.98)';
                     setTimeout(() => {{
                         this.style.transform = '';
-                    }}, 200);
+                    }}, 150);
                 }});
+            }});
+            
+            // Pull-to-refresh simulation
+            let startY = 0;
+            let pullDistance = 0;
+            const threshold = 100;
+            
+            document.addEventListener('touchstart', (e) => {{
+                startY = e.touches[0].clientY;
+            }});
+            
+            document.addEventListener('touchmove', (e) => {{
+                pullDistance = e.touches[0].clientY - startY;
+                if (pullDistance > 0 && window.scrollY === 0) {{
+                    e.preventDefault();
+                }}
+            }});
+            
+            document.addEventListener('touchend', () => {{
+                if (pullDistance > threshold && window.scrollY === 0) {{
+                    window.location.reload();
+                }}
+                pullDistance = 0;
             }});
         }});
     </script>
@@ -488,6 +772,106 @@ def generate_html(menu_data: Dict) -> str:
 </html>"""
 
     return html
+
+
+def generate_manifest() -> str:
+    """Generate PWA manifest.json file."""
+    return """{
+    "name": "Eurest Kaserne Timeout Menu",
+    "short_name": "Eurest Menu",
+    "description": "Daily lunch menu from Eurest Kaserne Timeout restaurant in Bern, Switzerland",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "orientation": "portrait-primary",
+    "theme_color": "#2563eb",
+    "background_color": "#ffffff",
+    "scope": "./",
+    "lang": "de",
+    "icons": [
+        {
+            "src": "./icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "./icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "./icon-180.png",
+            "sizes": "180x180",
+            "type": "image/png",
+            "purpose": "any"
+        }
+    ],
+    "categories": ["food", "lifestyle"],
+    "shortcuts": [
+        {
+            "name": "Today's Menu",
+            "short_name": "Menu",
+            "description": "View today's lunch menu",
+            "url": "./index.html",
+            "icons": [
+                {
+                    "src": "./icon-192.png",
+                    "sizes": "192x192"
+                }
+            ]
+        }
+    ]
+}"""
+
+
+def generate_service_worker() -> str:
+    """Generate service worker for PWA functionality."""
+    return """const CACHE_NAME = 'eurest-menu-v1';
+const urlsToCache = [
+    './',
+    './index.html',
+    './manifest.json',
+    './icon-192.png',
+    './icon-512.png'
+];
+
+// Install event - cache resources
+self.addEventListener('install', event => {
+    event.waitUntil(
+        caches.open(CACHE_NAME)
+            .then(cache => {
+                return cache.addAll(urlsToCache);
+            })
+    );
+});
+
+// Fetch event - serve from cache when offline
+self.addEventListener('fetch', event => {
+    event.respondWith(
+        caches.match(event.request)
+            .then(response => {
+                // Return cached version or fetch from network
+                return response || fetch(event.request);
+            }
+        )
+    );
+});
+
+// Activate event - clean up old caches
+self.addEventListener('activate', event => {
+    event.waitUntil(
+        caches.keys().then(cacheNames => {
+            return Promise.all(
+                cacheNames.map(cacheName => {
+                    if (cacheName !== CACHE_NAME) {
+                        return caches.delete(cacheName);
+                    }
+                })
+            );
+        })
+    );
+});"""
 
 
 def main():
@@ -509,10 +893,34 @@ def main():
     with open('index.html', 'w', encoding='utf-8') as f:
         f.write(html_content)
     
-    print("✅ Website generated successfully!")
+    # Save manifest file
+    with open('manifest.json', 'w', encoding='utf-8') as f:
+        f.write(generate_manifest())
+    
+    # Save service worker file
+    with open('sw.js', 'w', encoding='utf-8') as f:
+        f.write(generate_service_worker())
+    
+    print("✅ PWA website generated successfully!")
     print("📁 Files created:")
     print("   - index.html (main website)")
+    print("   - manifest.json (PWA manifest)")
+    print("   - sw.js (service worker)")
     print(f"   - {json_file} (source data)")
+    print("")
+    print("📱 PWA Features:")
+    print("   - Installable as app on iOS/Android")
+    print("   - Offline support")
+    print("   - App-like experience")
+    print("   - Touch-optimized interface")
+    print("   - Pull-to-refresh functionality")
+    print("")
+    print("🖼️  Note: Add app icons for full PWA experience:")
+    print("   - icon-16.png, icon-32.png (favicon)")
+    print("   - icon-120.png, icon-152.png, icon-180.png (iOS)")
+    print("   - icon-192.png, icon-512.png (Android)")
+    print("")
+    print("📲 Installation: Open in Safari/Chrome and tap 'Add to Home Screen'")
     
     # Print some statistics
     total_items = menu_data.get('total_items', 0)
