@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lunchinator - Kaserne Timeout Menü</title>
+    <title>Lunchinator - Kaserne Treffpunkt Menü</title>
     
     <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#111827">
@@ -219,6 +219,52 @@
             cursor: pointer;
             margin-left: 0.5rem;
         }
+
+        .meal-toggle {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 25px;
+            padding: 4px;
+            display: flex;
+            gap: 4px;
+            box-shadow: var(--shadow);
+            z-index: 1000;
+        }
+
+        .meal-toggle button {
+            background: transparent;
+            border: none;
+            color: var(--text-color);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .meal-toggle button.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .meal-toggle button:hover:not(.active) {
+            background: var(--border-color);
+        }
+
+        @media (max-width: 768px) {
+            .meal-toggle {
+                bottom: 15px;
+            }
+            
+            .meal-toggle button {
+                padding: 6px 12px;
+                font-size: 0.9rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -237,18 +283,25 @@
                 <p>Lade Menüdaten...</p>
             </div>
         </div>
+        
+        <div class="meal-toggle">
+            <button id="lunchBtn" class="active">Lunch</button>
+            <button id="dinnerBtn">Dinner</button>
+        </div>
     </div>
 
     <script>
         class Lunchinator {
             constructor() {
-                this.apiBase = 'https://clients.eurest.ch/kaserne/de/Timeout';
+                this.apiBase = 'https://clients.eurest.ch/kaserne/de/Treffpunkt';
                 this.currentDate = new Date();
+                this.mealType = 'lunch'; // 'lunch' or 'dinner'
                 this.init();
             }
 
             async init() {
                 this.setupPWA();
+                this.setupMealToggle();
                 await this.loadMenu();
             }
 
@@ -325,6 +378,7 @@
                     
                     const html = await response.text();
                     console.log('Fetched HTML length:', html.length);
+                    console.log(`Extracting menu for: ${this.mealType}`);
                     
                     // First try direct text extraction for Eurest format
                     let menuItems = this.extractMenuFromText(html);
@@ -338,7 +392,7 @@
 
                     // Remove duplicates and filter valid items
                     const uniqueItems = this.removeDuplicates(menuItems);
-                    console.log(`Final menu items: ${uniqueItems.length}`);
+                    console.log(`Final menu items for ${this.mealType}: ${uniqueItems.length}`);
                     
                     return uniqueItems.length > 0 ? uniqueItems : this.createSampleMenu();
                     
@@ -481,14 +535,14 @@
             shouldIncludeMenuItem(title, description, category) {
                 const combinedText = `${title} ${description} ${category}`.toLowerCase();
                 
-                // Filter out breakfast items
+                // Filter out breakfast items (always excluded)
                 const breakfastKeywords = [
                     'frühstück', 'breakfast', 'kaffee', 'tee', 'orangensaft',
                     'butter', 'konfitüre', 'brot', 'cornflakes', 'fleisch- und käseplatte',
                     'croissant', 'gipfeli', 'müsli', 'joghurt', 'marmelade'
                 ];
                 
-                // Filter out dessert items
+                // Filter out dessert items (always excluded)
                 const dessertKeywords = [
                     'dessert', 'tagesdessert', 'nachspeise', 'kuchen', 'torte',
                     'eis', 'tiramisu', 'mousse', 'pudding', 'crème', 'früchte',
@@ -509,6 +563,27 @@
                         console.log(`Filtering out dessert item: ${title}`);
                         return false;
                     }
+                }
+                
+                // Filter based on meal type
+                if (this.mealType === 'lunch') {
+                    // Lunch typically includes lighter options, main courses
+                    const lunchKeywords = [
+                        'menu', 'salat', 'suppe', 'pasta', 'sandwich', 'wrap',
+                        'mittagessen', 'leicht', 'schnell'
+                    ];
+                    
+                    // Accept if it's a general dish or contains lunch keywords
+                    return true; // For now, include most items for lunch
+                } else if (this.mealType === 'dinner') {
+                    // Dinner typically includes heartier options
+                    const dinnerKeywords = [
+                        'schnitzel', 'steak', 'braten', 'abendessen', 'warm',
+                        'deftig', 'hauptgang', 'fleisch', 'fisch'
+                    ];
+                    
+                    // Accept if it's a general dish or contains dinner keywords
+                    return true; // For now, include most items for dinner
                 }
                 
                 return true;
@@ -752,12 +827,12 @@
                 const today = new Date();
                 const dayOfWeek = today.getDay();
                 
-                const sampleMenus = [
+                const lunchMenus = [
                     {
-                        title: "Schnitzel Wiener Art",
-                        description: "Paniertes Kalbsschnitzel mit Pommes frites und Salat",
-                        price: "CHF 16.50",
-                        category: "Hit"
+                        title: "Caesar Salad",
+                        description: "Römersalat mit Hähnchenbrust, Parmesan und Croutons",
+                        price: "CHF 12.50",
+                        category: "Menu"
                     },
                     {
                         title: "Pasta Arrabbiata",
@@ -766,32 +841,61 @@
                         category: "Vegi"
                     },
                     {
-                        title: "Grillierter Lachs",
+                        title: "Grillierte Hähnchenbrust",
                         description: "Mit Kräuterbutter, Reis und Gemüse der Saison",
-                        price: "CHF 18.50",
+                        price: "CHF 15.50",
                         category: "Menu"
                     },
                     {
-                        title: "Caesar Salad",
-                        description: "Römersalat mit Hähnchenbrust, Parmesan und Croutons",
-                        price: "CHF 12.50",
-                        category: "Menu"
-                    },
-                    {
-                        title: "Schweinsrahmschnitzel",
-                        description: "an Champignonssauce, Teigwaren, Tagessalat",
-                        price: "CHF 14.80",
-                        category: "Hit"
+                        title: "Quinoa Bowl",
+                        description: "Mit geröstetem Gemüse, Avocado und Tahini-Dressing",
+                        price: "CHF 14.90",
+                        category: "Vegi"
                     }
                 ];
 
+                const dinnerMenus = [
+                    {
+                        title: "Schnitzel Wiener Art",
+                        description: "Paniertes Kalbsschnitzel mit Pommes frites und Salat",
+                        price: "CHF 18.50",
+                        category: "Hit"
+                    },
+                    {
+                        title: "Schweinsrahmschnitzel",
+                        description: "An Champignonssauce, Teigwaren, Tagessalat",
+                        price: "CHF 16.80",
+                        category: "Hit"
+                    },
+                    {
+                        title: "Grillierter Lachs",
+                        description: "Mit Kräuterbutter, Kartoffelgratin und Gemüse",
+                        price: "CHF 22.50",
+                        category: "Menu"
+                    },
+                    {
+                        title: "Rindersteak",
+                        description: "Medium gebraten mit Pfeffersauce und Rösti",
+                        price: "CHF 24.90",
+                        category: "Hit"
+                    },
+                    {
+                        title: "Vegetarisches Curry",
+                        description: "Mit Kokosmilch, Gemüse und Basmatireis",
+                        price: "CHF 17.50",
+                        category: "Vegi"
+                    }
+                ];
+
+                const menuSource = this.mealType === 'lunch' ? lunchMenus : dinnerMenus;
+                
                 // Return 2-4 items based on day of week
                 const numItems = 2 + (dayOfWeek % 3); // 2-4 items
-                const startIndex = dayOfWeek % sampleMenus.length;
+                const startIndex = dayOfWeek % menuSource.length;
                 
                 const result = [];
                 for (let i = 0; i < numItems; i++) {
-                    result.push(sampleMenus[(startIndex + i) % sampleMenus.length]);
+                    result.push(menuSource[(startIndex + i) % menuSource.length]);
                 }
                 
                 return result;
@@ -809,7 +913,19 @@
                     menuData = this.createSampleMenu().slice(0, 2);
                 }
 
+                const mealTypeTitle = this.mealType === 'lunch' ? 'Lunch' : 'Dinner';
+                const currentDate = new Date().toLocaleDateString('de-CH', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+
                 const menuHTML = `
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <h1 style="color: var(--primary-color); margin-bottom: 0.5rem;">${mealTypeTitle} - Kaserne Treffpunkt</h1>
+                        <p style="color: var(--secondary-color);">${currentDate}</p>
+                    </div>
                     <div class="menu-grid">
                         ${menuData.map(item => `
                             <div class="menu-card">
@@ -833,6 +949,29 @@
                         <p>Bitte versuchen Sie es später erneut.</p>
                     </div>
                 `;
+            }
+
+            setupMealToggle() {
+                const lunchBtn = document.getElementById('lunchBtn');
+                const dinnerBtn = document.getElementById('dinnerBtn');
+
+                lunchBtn.addEventListener('click', async () => {
+                    if (this.mealType !== 'lunch') {
+                        this.mealType = 'lunch';
+                        lunchBtn.classList.add('active');
+                        dinnerBtn.classList.remove('active');
+                        await this.loadMenu();
+                    }
+                });
+
+                dinnerBtn.addEventListener('click', async () => {
+                    if (this.mealType !== 'dinner') {
+                        this.mealType = 'dinner';
+                        dinnerBtn.classList.add('active');
+                        lunchBtn.classList.remove('active');
+                        await this.loadMenu();
+                    }
+                });
             }
 
             setupPWA() {
