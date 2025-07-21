@@ -535,16 +535,31 @@
             renderMenu(menuData) {
                 const content = document.getElementById('content');
                 if (!Array.isArray(menuData)) menuData = [menuData];
-                // Fallback for dinner: if no Abend items, show regular items
-                if (this.mealType === 'dinner') {
+                
+                // Filter menu data based on current meal type
+                if (this.mealType === 'lunch') {
+                    // For lunch: only show Menu, Vegi, Hit (no Abend items)
+                    menuData = menuData.filter(item => {
+                        const cat = (item.category || '').toLowerCase();
+                        return ['menu', 'vegi', 'hit'].includes(cat) && !cat.includes('abend');
+                    });
+                } else if (this.mealType === 'dinner') {
+                    // For dinner: prefer Abend items, fallback to regular items if no Abend items
                     const abendItems = menuData.filter(item => (item.category||'').toLowerCase().includes('abend'));
                     if (abendItems.length > 0) {
                         menuData = abendItems;
                     } else {
-                        menuData = menuData.filter(item => ['menu','vegi','hit'].includes((item.category||'').toLowerCase()) && !(item.category||'').toLowerCase().includes('abend'));
+                        menuData = menuData.filter(item => {
+                            const cat = (item.category || '').toLowerCase();
+                            return ['menu', 'vegi', 'hit'].includes(cat) && !cat.includes('abend');
+                        });
                     }
                 }
-                if (menuData.length === 0) menuData = this.createSampleMenu().slice(0, 2);
+                
+                // If no items after filtering, use sample menu
+                if (menuData.length === 0) {
+                    menuData = this.createSampleMenu();
+                }
                 const mealTypeTitle = this.mealType === 'lunch' ? 'Lunch' : 'Dinner';
                 const currentDate = new Date().toLocaleDateString('de-CH', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
                 const menuHTML = `
@@ -565,6 +580,244 @@
                 `;
 
                 content.innerHTML = menuHTML;
+            }
+
+            extractMenuFromText(html) {
+                const menuItems = [];
+                
+                // Remove HTML tags but keep structure with specific delimiters
+                const text = html.replace(/<script[^>]*>.*?<\/script>/gis, '')
+                              .replace(/<style[^>]*>.*?<\/style>/gis, '')
+                              .replace(/<br\s*\/?>/gi, '\n')
+                              .replace(/<\/div>/gi, '\n')
+                              .replace(/<\/p>/gi, '\n')
+                              .replace(/<[^>]*>/g, ' ')
+                              .replace(/\s+/g, ' ')
+                              .trim();
+                
+                console.log(`Processing text for ${this.mealType} menu extraction...`);
+                
+                // Look for the specific Eurest Treffpunkt pattern based on the provided data
+                // Pattern: Title Description Category CHF Price
+                const menuPattern = /([A-ZÄÖÜ][a-zäöüß\s\(\),.-]+?)\s+([a-zäöüß][^A-ZÄÖÜ]*?)\s+(Menu|Vegi|Hit|Menu Abend|Vegi Abend|Frühstück|Tagesdessert)(?:\s+\+)?\s+CHF\s+(\d+[.,]\d{2})/gi;
+                
+                let match;
+                while ((match = menuPattern.exec(text)) !== null) {
+                    const [fullMatch, title, description, category, price] = match;
+                    
+                    console.log(`Found potential menu item:`, { title, description, category, price });
+                    
+                    // Clean up the extracted data
+                    const cleanTitle = this.cleanText(title);
+                    const cleanDescription = this.cleanText(description);
+                    const cleanCategory = this.cleanText(category);
+                    const cleanPrice = `CHF ${price}`;
+                    
+                    // Apply meal type and content filtering
+                    if (this.shouldIncludeMenuItem(cleanTitle, cleanDescription, cleanCategory)) {
+                        menuItems.push({
+                            title: cleanTitle,
+                            description: cleanDescription,
+                            price: cleanPrice,
+                            category: cleanCategory
+                        });
+                        console.log(`Added menu item: ${cleanTitle} - ${cleanCategory} - ${cleanPrice}`);
+                    }
+                }
+                
+                // If the regex pattern didn't work, try a more flexible approach
+                if (menuItems.length === 0) {
+                    console.log('Regex pattern failed, trying flexible text extraction...');
+                    
+                    // Split into chunks around CHF prices
+                    const priceMatches = [...text.matchAll(/CHF\s+(\d+[.,]\d{2})/g)];
+                    
+                    for (let i = 0; i < priceMatches.length; i++) {
+                        const priceMatch = priceMatches[i];
+                        const price = `CHF ${priceMatch[1]}`;
+                        
+                        // Get text before this price (potential menu item)
+                        const beforePrice = text.substring(
+                            i > 0 ? priceMatches[i-1].index + priceMatches[i-1][0].length : 0,
+                            priceMatch.index
+                        ).trim();
+                        
+                        // Look for category keywords near the price
+                        const nearPrice = text.substring(
+                            Math.max(0, priceMatch.index - 100),
+                            Math.min(text.length, priceMatch.index + 50)
+                        );
+                        
+                        const categoryMatch = nearPrice.match(/(Menu|Vegi|Hit|Menu Abend|Vegi Abend|Frühstück|Tagesdessert)/i);
+                        const category = categoryMatch ? categoryMatch[1] : 'Menu';
+                        
+                        // Extract title and description from the text before price
+                        const lines = beforePrice.split(/\s{2,}|\n/).filter(l => l.trim().length > 3);
+                        if (lines.length >= 1) {
+                            const title = lines[lines.length - 1].trim();
+                            const description = lines.length > 1 ? lines[lines.length - 2].trim() : '';
+                            
+                            if (title.length > 3 && this.shouldIncludeMenuItem(title, description, category)) {
+                                menuItems.push({
+                                    title: this.cleanText(title),
+                                    description: this.cleanText(description),
+                                    price: price,
+                                    category: category
+                                });
+                                console.log(`Added flexible menu item: ${title} - ${category} - ${price}`);
+                            }
+                        }
+                    }
+                }
+                
+                return this.removeDuplicates(menuItems);
+            }
+
+            removeDuplicates(items) {
+                const seen = new Set();
+                return items.filter(item => {
+                    const key = `${item.title.toLowerCase()}-${item.category}`;
+                    if (seen.has(key)) {
+                        return false;
+                    }
+                    seen.add(key);
+                    return true;
+                });
+            }
+
+            cleanText(text) {
+                if (!text) return '';
+                return text.trim()
+                          .replace(/\s+/g, ' ')
+                          .replace(/[^\w\säöüÄÖÜß.,()&-]/g, '')
+                          .replace(/\s*,\s*/g, ', ')
+                          .replace(/\s*\(\s*/g, ' (')
+                          .replace(/\s*\)\s*/g, ') ')
+                          .trim();
+            }
+
+            createSampleMenu() {
+                // Create sample menu data based on actual Treffpunkt structure
+                const today = new Date();
+                const dayOfWeek = today.getDay();
+                
+                const lunchMenus = [
+                    {
+                        title: "Emmentaler Brätschnitzel (Schwein, CH)",
+                        description: "Rotweinjus, Teigwaren, Karotten Duo",
+                        price: "CHF 14.80",
+                        category: "Menu"
+                    },
+                    {
+                        title: "Indisches Linsen Dal",
+                        description: "mit Gemüse & Kartoffeln, Naan Brot, Tagessalat",
+                        price: "CHF 14.80",
+                        category: "Vegi"
+                    },
+                    {
+                        title: "Pasta al Pesto Rucola",
+                        description: "Reibkäse, Tagessalat",
+                        price: "CHF 14.20",
+                        category: "Hit"
+                    }
+                ];
+
+                const dinnerMenus = [
+                    {
+                        title: "Rotes Poulet (CH) Curry",
+                        description: "Basmatireis, Tagessalat",
+                        price: "CHF 14.00",
+                        category: "Menu Abend"
+                    },
+                    {
+                        title: "Rotes Kichererbsen Curry",
+                        description: "mit Gemüse, Basmatireis, Tagessalat",
+                        price: "CHF 14.00",
+                        category: "Vegi Abend"
+                    }
+                ];
+
+                const menuSource = this.mealType === 'lunch' ? lunchMenus : dinnerMenus;
+                
+                // Return items based on day of week
+                const numItems = this.mealType === 'lunch' ? 3 : 2; // Lunch has more options typically
+                const startIndex = dayOfWeek % menuSource.length;
+                
+                const result = [];
+                for (let i = 0; i < Math.min(numItems, menuSource.length); i++) {
+                    result.push(menuSource[(startIndex + i) % menuSource.length]);
+                }
+                
+                return result;
+            }
+
+            extractText(element, selectors) {
+                for (const selector of selectors) {
+                    const found = element.querySelector(selector);
+                    if (found && found.textContent && found.textContent.trim()) {
+                        return found.textContent.trim();
+                    }
+                }
+                return '';
+            }
+
+            determineCategory(title, description, category, element) {
+                const combinedText = `${title} ${description} ${category}`.toLowerCase();
+                
+                // Check the element and its siblings for category indicators
+                const elementText = element?.textContent?.toLowerCase() || '';
+                
+                // Look for Eurest-specific category markers
+                if (elementText.includes('vegi') || combinedText.includes('vegetarisch')) {
+                    return 'Vegi';
+                }
+                
+                if (elementText.includes('hit') || combinedText.includes('hit')) {
+                    return 'Hit';
+                }
+                
+                if (elementText.includes('menu') || combinedText.includes('menu')) {
+                    return 'Menu';
+                }
+                
+                // Check for vegetarian indicators
+                const vegiKeywords = [
+                    'vegetarisch', 'vegan', 'veggie', 'pasta', 'tortellini',
+                    'salat', 'gemüse', 'ricotta', 'spinat', 'tofu'
+                ];
+                
+                for (const keyword of vegiKeywords) {
+                    if (combinedText.includes(keyword)) {
+                        return 'Vegi';
+                    }
+                }
+                
+                // Check for meat dishes (Hit category indicators)
+                const meatKeywords = [
+                    'schnitzel', 'schweins', 'rind', 'fleisch', 'hähnchen',
+                    'poulet', 'lamm', 'kalb', 'steak'
+                ];
+                
+                for (const keyword of meatKeywords) {
+                    if (combinedText.includes(keyword)) {
+                        return 'Hit';
+                    }
+                }
+                
+                // Check for fish dishes
+                const fishKeywords = [
+                    'lachs', 'fisch', 'thunfisch', 'forelle', 'scholle',
+                    'kabeljau', 'meeresfrüchte'
+                ];
+                
+                for (const keyword of fishKeywords) {
+                    if (combinedText.includes(keyword)) {
+                        return 'Menu';
+                    }
+                }
+                
+                // Default category
+                return 'Menu';
             }
 
             showError(message) {
