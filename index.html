@@ -1,897 +1,667 @@
 <!DOCTYPE html>
-<html lang="de" data-theme="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lunchinator - Kaserne Treffpunkt Menü</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Eurest Menu</title>
     
     <!-- PWA Meta Tags -->
-    <meta name="theme-color" content="#111827">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Lunchinator">
+    <meta name="apple-mobile-web-app-title" content="Eurest Menu">
+    <meta name="theme-color" content="#000000">
     
-    <!-- Manifest -->
+    <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.json">
     
-    <!-- Favicons -->
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="icon" type="image/png" sizes="32x32" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iMzIiIGhlaWdodD0iMzIiPjxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiByeD0iOTYiIGZpbGw9IiMzYjgyZjYiLz48Y2lyY2xlIGN4PSIyNTYiIGN5PSIyNTYiIHI9IjE4MCIgZmlsbD0iI2Y5ZmFmYiIgc3Ryb2tlPSIjMWYyOTM3IiBzdHJva2Utd2lkdGg9IjgiLz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxODAsIDIwMCkiPjxyZWN0IHg9IjE1IiB5PSI4MCIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyMCIgcng9IjYiIGZpbGw9IiMxZjI5MzciLz48cmVjdCB4PSI4IiB5PSI1MCIgd2lkdGg9IjYiIGhlaWdodD0iNDAiIHJ4PSIzIiBmaWxsPSIjMWYyOTM3Ii8+PHJlY3QgeD0iMTYiIHk9IjUwIiB3aWR0aD0iNiIgaGVpZ2h0PSI0MCIgcng9IjMiIGZpbGw9IiMxZjI5MzciLz48cmVjdCB4PSIyNCIgeT0iNTAiIHdpZHRoPSI2IiBoZWlnaHQ9IjQwIiByeD0iMyIgZmlsbD0iIzFmMjkzNyIvPjwvZz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyOTAsIDIwMCkiPjxyZWN0IHg9IjE1IiB5PSI4MCIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyMCIgcng9IjYiIGZpbGw9IiMxZjI5MzciLz48cGF0aCBkPSJNMTUgNTAgTDI3IDUwIEwyNyA4NSBMMTUgODUgWiIgZmlsbD0iIzk0YTNiOCIvPjxwYXRoIGQ9Ik0yMSAzMCBMMjcgNTAgTDE1IDUwIFoiIGZpbGw9IiNjYmQ1ZTEiLz48L2c+PGVsbGlwc2UgY3g9IjI1NiIgY3k9IjI0MCIgcng9IjYwIiByeT0iMjUiIGZpbGw9IiMxMGI5ODEiLz48ZWxsaXBzZSBjeD0iMjQwIiBjeT0iMjUwIiByeD0iMzUiIHJ5PSIxNSIgZmlsbD0iIzM0ZDM5OSIvPjxlbGxpcHNlIGN4PSIyNzUiIGN5PSIyNTUiIHJ4PSIyNSIgcnk9IjEyIiBmaWxsPSIjZjU5ZTBiIi8+PC9zdmc+">
-    <link rel="icon" type="image/png" sizes="16x16" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iMTYiIGhlaWdodD0iMTYiPjxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiByeD0iOTYiIGZpbGw9IiMzYjgyZjYiLz48Y2lyY2xlIGN4PSIyNTYiIGN5PSIyNTYiIHI9IjE4MCIgZmlsbD0iI2Y5ZmFmYiIgc3Ryb2tlPSIjMWYyOTM3IiBzdHJva2Utd2lkdGg9IjgiLz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxODAsIDIwMCkiPjxyZWN0IHg9IjE1IiB5PSI4MCIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyMCIgcng9IjYiIGZpbGw9IiMxZjI5MzciLz48cmVjdCB4PSI4IiB5PSI1MCIgd2lkdGg9IjYiIGhlaWdodD0iNDAiIHJ4PSIzIiBmaWxsPSIjMWYyOTM3Ii8+PHJlY3QgeD0iMTYiIHk9IjUwIiB3aWR0aD0iNiIgaGVpZ2h0PSI0MCIgcng9IjMiIGZpbGw9IiMxZjI5MzciLz48cmVjdCB4PSIyNCIgeT0iNTAiIHdpZHRoPSI2IiBoZWlnaHQ9IjQwIiByeD0iMyIgZmlsbD0iIzFmMjkzNyIvPjwvZz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyOTAsIDIwMCkiPjxyZWN0IHg9IjE1IiB5PSI4MCIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyMCIgcng9IjYiIGZpbGw9IiMxZjI5MzciLz48cGF0aCBkPSJNMTUgNTAgTDI3IDUwIEwyNyA4NSBMMTUgODUgWiIgZmlsbD0iIzk0YTNiOCIvPjxwYXRoIGQ9Ik0yMSAzMCBMMjcgNTAgTDE1IDUwIFoiIGZpbGw9IiNjYmQ1ZTEiLz48L2c+PGVsbGlwc2UgY3g9IjI1NiIgY3k9IjI0MCIgcng9IjYwIiByeT0iMjUiIGZpbGw9IiMxMGI5ODEiLz48ZWxsaXBzZSBjeD0iMjQwIiBjeT0iMjUwIiByeD0iMzUiIHJ5PSIxNSIgZmlsbD0iIzM0ZDM5OSIvPjxlbGxpcHNlIGN4PSIyNzUiIGN5PSIyNTUiIHJ4PSIyNSIgcnk9IjEyIiBmaWxsPSIjZjU5ZTBiIi8+PC9zdmc+">
-    
-    <!-- Apple Touch Icons -->
-    <link rel="apple-touch-icon" sizes="180x180" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCI+PHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHJ4PSI5NiIgZmlsbD0iIzNiODJmNiIvPjxjaXJjbGUgY3g9IjI1NiIgY3k9IjI1NiIgcj0iMTgwIiBmaWxsPSIjZjlmYWZiIiBzdHJva2U9IiMxZjI5MzciIHN0cm9rZS13aWR0aD0iOCIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE4MCwgMjAwKSI+PHJlY3QgeD0iMTUiIHk9IjgwIiB3aWR0aD0iMTIiIGhlaWdodD0iMTIwIiByeD0iNiIgZmlsbD0iIzFmMjkzNyIvPjxyZWN0IHg9IjgiIHk9IjUwIiB3aWR0aD0iNiIgaGVpZ2h0PSI0MCIgcng9IjMiIGZpbGw9IiMxZjI5MzciLz48cmVjdCB4PSIxNiIgeT0iNTAiIHdpZHRoPSI2IiBoZWlnaHQ9IjQwIiByeD0iMyIgZmlsbD0iIzFmMjkzNyIvPjxyZWN0IHg9IjI0IiB5PSI1MCIgd2lkdGg9IjYiIGhlaWdodD0iNDAiIHJ4PSIzIiBmaWxsPSIjMWYyOTM3Ii8+PC9nPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI5MCwgMjAwKSI+PHJlY3QgeD0iMTUiIHk9IjgwIiB3aWR0aD0iMTIiIGhlaWdodD0iMTIwIiByeD0iNiIgZmlsbD0iIzFmMjkzNyIvPjxwYXRoIGQ9Ik0xNSA1MCBMMjcgNTAgTDI3IDg1IEwxNSA4NSBaIiBmaWxsPSIjOTRhM2I4Ii8+PHBhdGggZD0iTTIxIDMwIEwyNyA1MCBMMTUgNTAgWiIgZmlsbD0iI2NiZDVlMSIvPjwvZz48ZWxsaXBzZSBjeD0iMjU2IiBjeT0iMjQwIiByeD0iNjAiIHJ5PSIyNSIgZmlsbD0iIzEwYjk4MSIvPjxlbGxpcHNlIGN4PSIyNDAiIGN5PSIyNTAiIHJ4PSIzNSIgcnk9IjE1IiBmaWxsPSIjMzRkMzk5Ii8+PGVsbGlwc2UgY3g9IjI3NSIgY3k9IjI1NSIgcng9IjI1IiByeT0iMTIiIGZpbGw9IiNmNTllMGIiLz48L3N2Zz4=">
-    <link rel="apple-touch-icon" sizes="152x152" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iMTUyIiBoZWlnaHQ9IjE1MiI+PHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHJ4PSI5NiIgZmlsbD0iIzNiODJmNiIvPjxjaXJjbGUgY3g9IjI1NiIgY3k9IjI1NiIgcj0iMTgwIiBmaWxsPSIjZjlmYWZiIiBzdHJva2U9IiMxZjI5MzciIHN0cm9rZS13aWR0aD0iOCIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE4MCwgMjAwKSI+PHJlY3QgeD0iMTUiIHk9IjgwIiB3aWR0aD0iMTIiIGhlaWdodD0iMTIwIiByeD0iNiIgZmlsbD0iIzFmMjkzNyIvPjxyZWN0IHg9IjgiIHk9IjUwIiB3aWR0aD0iNiIgaGVpZ2h0PSI0MCIgcng9IjMiIGZpbGw9IiMxZjI5MzciLz48cmVjdCB4PSIxNiIgeT0iNTAiIHdpZHRoPSI2IiBoZWlnaHQ9IjQwIiByeD0iMyIgZmlsbD0iIzFmMjkzNyIvPjxyZWN0IHg9IjI0IiB5PSI1MCIgd2lkdGg9IjYiIGhlaWdodD0iNDAiIHJ4PSIzIiBmaWxsPSIjMWYyOTM3Ii8+PC9nPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI5MCwgMjAwKSI+PHJlY3QgeD0iMTUiIHk9IjgwIiB3aWR0aD0iMTIiIGhlaWdodD0iMTIwIiByeD0iNiIgZmlsbD0iIzFmMjkzNyIvPjxwYXRoIGQ9Ik0xNSA1MCBMMjcgNTAgTDI3IDg1IEwxNSA4NSBaIiBmaWxsPSIjOTRhM2I4Ii8+PHBhdGggZD0iTTIxIDMwIEwyNyA1MCBMMTUgNTAgWiIgZmlsbD0iI2NiZDVlMSIvPjwvZz48ZWxsaXBzZSBjeD0iMjU2IiBjeT0iMjQwIiByeD0iNjAiIHJ5PSIyNSIgZmlsbD0iIzEwYjk4MSIvPjxlbGxpcHNlIGN4PSIyNDAiIGN5PSIyNTAiIHJ4PSIzNSIgcnk9IjE1IiBmaWxsPSIjMzRkMzk5Ii8+PGVsbGlwc2UgY3g9IjI3NSIgY3k9IjI1NSIgcng9IjI1IiByeT0iMTIiIGZpbGw9IiNmNTllMGIiLz48L3N2Zz4=">
-    <link rel="apple-touch-icon" sizes="120x120" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCI+PHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHJ4PSI5NiIgZmlsbD0iIzNiODJmNiIvPjxjaXJjbGUgY3g9IjI1NiIgY3k9IjI1NiIgcj0iMTgwIiBmaWxsPSIjZjlmYWZiIiBzdHJva2U9IiMxZjI5MzciIHN0cm9rZS13aWR0aD0iOCIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE4MCwgMjAwKSI+PHJlY3QgeD0iMTUiIHk9IjgwIiB3aWR0aD0iMTIiIGhlaWdodD0iMTIwIiByeD0iNiIgZmlsbD0iIzFmMjkzNyIvPjxyZWN0IHg9IjgiIHk9IjUwIiB3aWR0aD0iNiIgaGVpZ2h0PSI0MCIgcng9IjMiIGZpbGw9IiMxZjI5MzciLz48cmVjdCB4PSIxNiIgeT0iNTAiIHdpZHRoPSI2IiBoZWlnaHQ9IjQwIiByeD0iMyIgZmlsbD0iIzFmMjkzNyIvPjxyZWN0IHg9IjI0IiB5PSI1MCIgd2lkdGg9IjYiIGhlaWdodD0iNDAiIHJ4PSIzIiBmaWxsPSIjMWYyOTM3Ii8+PC9nPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI5MCwgMjAwKSI+PHJlY3QgeD0iMTUiIHk9IjgwIiB3aWR0aD0iMTIiIGhlaWdodD0iMTIwIiByeD0iNiIgZmlsbD0iIzFmMjkzNyIvPjxwYXRoIGQ9Ik0xNSA1MCBMMjcgNTAgTDI3IDg1IEwxNSA4NSBaIiBmaWxsPSIjOTRhM2I4Ii8+PHBhdGggZD0iTTIxIDMwIEwyNyA1MCBMMTUgNTAgWiIgZmlsbD0iI2NiZDVlMSIvPjwvZz48ZWxsaXBzZSBjeD0iMjU2IiBjeT0iMjQwIiByeD0iNjAiIHJ5PSIyNSIgZmlsbD0iIzEwYjk4MSIvPjxlbGxpcHNlIGN4PSIyNDAiIGN5PSIyNTAiIHJ4PSIzNSIgcnk9IjE1IiBmaWxsPSIjMzRkMzk5Ii8+PGVsbGlwc2UgY3g9IjI3NSIgY3k9IjI1NSIgcng9IjI1IiByeT0iMTIiIGZpbGw9IiNmNTllMGIiLz48L3N2Zz4=">
-    
-    <!-- Microsoft Tiles -->
-    <meta name="msapplication-TileColor" content="#3b82f6">
-    <meta name="msapplication-TileImage" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iMTQ0IiBoZWlnaHQ9IjE0NCI+PHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHJ4PSI5NiIgZmlsbD0iIzNiODJmNiIvPjxjaXJjbGUgY3g9IjI1NiIgY3k9IjI1NiIgcj0iMTgwIiBmaWxsPSIjZjlmYWZiIiBzdHJva2U9IiMxZjI5MzciIHN0cm9rZS13aWR0aD0iOCIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE4MCwgMjAwKSI+PHJlY3QgeD0iMTUiIHk9IjgwIiB3aWR0aD0iMTIiIGhlaWdodD0iMTIwIiByeD0iNiIgZmlsbD0iIzFmMjkzNyIvPjxyZWN0IHg9IjgiIHk9IjUwIiB3aWR0aD0iNiIgaGVpZ2h0PSI0MCIgcng9IjMiIGZpbGw9IiMxZjI5MzciLz48cmVjdCB4PSIxNiIgeT0iNTAiIHdpZHRoPSI2IiBoZWlnaHQ9IjQwIiByeD0iMyIgZmlsbD0iIzFmMjkzNyIvPjxyZWN0IHg9IjI0IiB5PSI1MCIgd2lkdGg9IjYiIGhlaWdodD0iNDAiIHJ4PSIzIiBmaWxsPSIjMWYyOTM3Ii8+PC9nPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI5MCwgMjAwKSI+PHJlY3QgeD0iMTUiIHk9IjgwIiB3aWR0aD0iMTIiIGhlaWdodD0iMTIwIiByeD0iNiIgZmlsbD0iIzFmMjkzNyIvPjxwYXRoIGQ9Ik0xNSA1MCBMMjcgNTAgTDI3IDg1IEwxNSA4NSBaIiBmaWxsPSIjOTRhM2I4Ii8+PHBhdGggZD0iTTIxIDMwIEwyNyA1MCBMMTUgNTAgWiIgZmlsbD0iI2NiZDVlMSIvPjwvZz48ZWxsaXBzZSBjeD0iMjU2IiBjeT0iMjQwIiByeD0iNjAiIHJ5PSIyNSIgZmlsbD0iIzEwYjk4MSIvPjxlbGxpcHNlIGN4PSIyNDAiIGN5PSIyNTAiIHJ4PSIzNSIgcnk9IjE1IiBmaWxsPSIjMzRkMzk5Ii8+PGVsbGlwc2UgY3g9IjI3NSIgY3k9IjI1NSIgcng9IjI1IiByeT0iMTIiIGZpbGw9IiNmNTllMGIiLz48L3N2Zz4=">
-    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'ios-blue': '#007AFF',
+                        'ios-gray': '#8E8E93',
+                        'ios-gray-2': '#AEAEB2',
+                        'ios-gray-3': '#C7C7CC',
+                        'ios-gray-4': '#D1D1D6',
+                        'ios-gray-5': '#E5E5EA',
+                        'ios-gray-6': '#F2F2F7',
+                        'ios-dark-1': '#000000',
+                        'ios-dark-2': '#1C1C1E',
+                        'ios-dark-3': '#2C2C2E',
+                        'ios-dark-4': '#3A3A3C',
+                        'ios-dark-5': '#48484A',
+                        'ios-dark-6': '#636366'
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        :root {
-            --bg-color: #111827;
-            --text-color: #f9fafb;
-            --card-bg: #1f2937;
-            --border-color: #374151;
-            --primary-color: #3b82f6;
-            --secondary-color: #9ca3af;
-            --success-color: #34d399;
-            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.3), 0 1px 2px -1px rgb(0 0 0 / 0.3);
-        }
-
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
         }
-
+        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            overscroll-behavior: none;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem;
+        
+        .safe-area-inset-bottom {
+            padding-bottom: env(safe-area-inset-bottom);
         }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding: 1rem 0;
-            border-bottom: 1px solid var(--border-color);
+        
+        .swiftui-card {
+            background: rgba(28, 28, 30, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(84, 84, 88, 0.4);
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--primary-color);
+        
+        .swiftui-button {
+            transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            user-select: none;
         }
-
-        .theme-toggle {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
+        
+        .swiftui-button:active {
+            transform: scale(0.96);
+            opacity: 0.8;
+        }
+        
+        .segment-control {
+            background: rgba(58, 58, 60, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 2px;
+        }
+        
+        .segment-active {
+            background: rgba(0, 122, 255, 1);
             border-radius: 8px;
-            padding: 0.5rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .theme-toggle:hover {
-            background: var(--border-color);
-        }
-
-        .loading {
-            text-align: center;
-            padding: 2rem;
-            color: var(--secondary-color);
-        }
-
-        .error {
-            background: #3f1f1f;
-            color: #fca5a5;
-            padding: 1rem;
-            border-radius: 8px;
-            margin: 1rem 0;
-            border: 1px solid #7f1d1d;
-        }
-
-        .menu-grid {
-            display: grid;
-            gap: 1.5rem;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            padding: 1rem 0;
-        }
-
-        .menu-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: var(--shadow);
-            transition: all 0.3s ease;
-        }
-
-        .menu-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-        }
-
-        .menu-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--primary-color);
-        }
-
-        .menu-description {
-            color: var(--secondary-color);
-            margin-bottom: 1rem;
-            line-height: 1.5;
-        }
-
-        .menu-price {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--success-color);
-        }
-
-        .menu-category {
-            display: inline-block;
-            background: var(--primary-color);
             color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.875rem;
-            margin-bottom: 1rem;
         }
-
-        .date-selector {
-            display: none;
+        
+        .day-button {
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(84, 84, 88, 0.3);
+            transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
-
-        .refresh-btn {
-            display: none;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 0.5rem;
-            }
-
-            .menu-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .spinner {
-            border: 3px solid var(--border-color);
-            border-top: 3px solid var(--primary-color);
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .install-prompt {
-            background: var(--primary-color);
+        
+        .day-button.active {
+            background: rgba(0, 122, 255, 1);
+            border-color: rgba(0, 122, 255, 1);
             color: white;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            display: none;
-            justify-content: space-between;
-            align-items: center;
         }
-
-        .install-btn {
-            background: white;
-            color: var(--primary-color);
-            border: none;
-            border-radius: 6px;
-            padding: 0.5rem 1rem;
-            cursor: pointer;
+        
+        .price-badge {
+            background: linear-gradient(135deg, #007AFF, #5AC8FA);
+            color: white;
             font-weight: 600;
         }
-
-        .dismiss-btn {
-            background: transparent;
-            color: white;
-            border: 1px solid white;
-            border-radius: 6px;
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            margin-left: 0.5rem;
+        
+        .loading-animation {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
-
-        .meal-toggle {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 25px;
-            padding: 4px;
-            display: flex;
-            gap: 4px;
-            box-shadow: var(--shadow);
-            z-index: 1000;
+        
+        .slide-up {
+            animation: slideUp 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
-
-        .meal-toggle button {
-            background: transparent;
-            border: none;
-            color: var(--text-color);
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 500;
-        }
-
-        .meal-toggle button.active {
-            background: var(--primary-color);
-            color: white;
-        }
-
-        .meal-toggle button:hover:not(.active) {
-            background: var(--border-color);
-        }
-
-        @media (max-width: 768px) {
-            .meal-toggle {
-                bottom: 15px;
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
             }
-            
-            .meal-toggle button {
-                padding: 6px 12px;
-                font-size: 0.9rem;
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
+        }
+        
+        .dietary-badge {
+            background: rgba(52, 199, 89, 0.2);
+            color: #34C759;
+            border: 1px solid rgba(52, 199, 89, 0.3);
+        }
+        
+        .dietary-badge.vegetarian {
+            background: rgba(52, 199, 89, 0.2);
+            color: #34C759;
+            border: 1px solid rgba(52, 199, 89, 0.3);
+        }
+        
+        .dietary-badge.pork {
+            background: rgba(255, 149, 0, 0.2);
+            color: #FF9500;
+            border: 1px solid rgba(255, 149, 0, 0.3);
+        }
+        
+        .dietary-badge.beef {
+            background: rgba(255, 59, 48, 0.2);
+            color: #FF3B30;
+            border: 1px solid rgba(255, 59, 48, 0.3);
+        }
+        
+        .dietary-badge.poultry {
+            background: rgba(255, 204, 0, 0.2);
+            color: #FFCC00;
+            border: 1px solid rgba(255, 204, 0, 0.3);
+        }
+        
+        .dietary-badge.fish {
+            background: rgba(0, 122, 255, 0.2);
+            color: #007AFF;
+            border: 1px solid rgba(0, 122, 255, 0.3);
+        }
+        
+        .dietary-badge.veal {
+            background: rgba(175, 82, 222, 0.2);
+            color: #AF52DE;
+            border: 1px solid rgba(175, 82, 222, 0.3);
+        }
+        
+        .menu-type-badge {
+            background: rgba(58, 58, 60, 0.8);
+            color: #AEAEB2;
+            border: 1px solid rgba(84, 84, 88, 0.4);
+        }
+        
+        /* Status bar safe area */
+        .safe-top {
+            padding-top: env(safe-area-inset-top);
+        }
+        
+        .safe-bottom {
+            padding-bottom: env(safe-area-inset-bottom);
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <div class="install-prompt" id="installPrompt">
-            <span>📱 App installieren für eine bessere Erfahrung</span>
-            <div>
-                <button class="install-btn" id="installBtn">Installieren</button>
-                <button class="dismiss-btn" id="dismissBtn">Später</button>
+<body class="dark bg-ios-dark-1 text-white min-h-screen">
+    <div class="min-h-screen safe-top safe-bottom">
+        <!-- Navigation Header -->
+        <div class="sticky top-0 z-50 bg-ios-dark-1/90 backdrop-blur-lg border-b border-ios-dark-4">
+            <div class="px-4 py-4">
+                <h1 class="text-2xl font-bold text-center text-white">Eurest Menu</h1>
+                <p class="text-center text-ios-gray text-sm mt-1">Kaserne Treffpunkt</p>
             </div>
         </div>
 
-        <div id="content">
-            <div class="loading">
-                <div class="spinner"></div>
-                <p>Lade Menüdaten...</p>
+        <!-- Week Navigation -->
+        <div class="px-4 py-3 border-b border-ios-dark-4">
+            <div class="flex justify-between items-center">
+                <button class="swiftui-button text-ios-blue font-medium" onclick="previousWeek()">
+                    ← Previous
+                </button>
+                <span class="text-ios-gray-2 font-medium" id="weekLabel">Week 30, 2025</span>
+                <button class="swiftui-button text-ios-blue font-medium" onclick="nextWeek()">
+                    Next →
+                </button>
             </div>
         </div>
-        
-        <div class="meal-toggle">
-            <button id="lunchBtn" class="active">Lunch</button>
-            <button id="dinnerBtn">Dinner</button>
+
+        <!-- Day Selection -->
+        <div class="px-4 py-4">
+            <div class="grid grid-cols-5 gap-2" id="dayButtons">
+                <!-- Day buttons will be generated dynamically -->
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loadingState" class="px-4 py-8 text-center hidden">
+            <div class="loading-animation">
+                <div class="w-8 h-8 bg-ios-blue rounded-full mx-auto mb-4"></div>
+                <p class="text-ios-gray">Loading menu...</p>
+            </div>
+        </div>
+
+        <!-- Menu Items -->
+        <div class="px-4 pb-24 space-y-3" id="menuContainer">
+            <!-- Menu items will be populated here -->
+        </div>
+
+        <!-- Error State -->
+        <div id="errorState" class="px-4 py-8 text-center hidden">
+            <div class="text-ios-gray text-lg mb-2">No menu available</div>
+            <div class="text-ios-gray-2 text-sm">Please try selecting a different day</div>
+        </div>
+    </div>
+
+    <!-- Sticky Bottom Navigation Bar -->
+    <div class="fixed bottom-0 left-0 right-0 bg-ios-dark-2 border-t border-ios-gray border-opacity-20 px-4 py-3 safe-area-inset-bottom">
+        <div class="segment-control">
+            <div class="grid grid-cols-3 gap-1">
+                <button onclick="selectCategory('breakfast')" 
+                        class="swiftui-button py-3 px-4 text-center font-medium text-sm rounded-lg text-ios-gray-2"
+                        data-category="breakfast">
+                    Breakfast
+                </button>
+                <button onclick="selectCategory('lunch')" 
+                        class="swiftui-button py-3 px-4 text-center font-medium text-sm rounded-lg text-ios-gray-2"
+                        data-category="lunch">
+                    Lunch
+                </button>
+                <button onclick="selectCategory('dinner')" 
+                        class="swiftui-button py-3 px-4 text-center font-medium text-sm rounded-lg text-ios-gray-2"
+                        data-category="dinner">
+                    Dinner
+                </button>
+            </div>
         </div>
     </div>
 
     <script>
-        class Lunchinator {
-            constructor() {
-                this.apiBase = 'https://clients.eurest.ch/kaserne/de/Treffpunkt';
-                this.currentDate = new Date();
-                this.mealType = 'lunch'; // 'lunch' or 'dinner'
-                this.init();
-            }
+        // App state
+        let currentDate = new Date().toISOString().split('T')[0];
+        let currentCategory = getDefaultMealCategory(); // Auto-select based on time
+        let currentWeek = Math.ceil(((new Date() - new Date(new Date().getFullYear(), 0, 1)) / 86400000 + 1) / 7);
+        let currentYear = new Date().getFullYear();
+        let menuData = null;
 
-            async init() {
-                this.setupPWA();
-                this.setupMealToggle();
-                await this.loadMenu();
-            }
-
-            async loadMenu() {
-                const content = document.getElementById('content');
-                
-                content.innerHTML = `
-                    <div class="loading">
-                        <div class="spinner"></div>
-                        <p>Lade Menüdaten...</p>
-                    </div>
-                `;
-
-                try {
-                    // Try different API endpoints that might exist
-                    const possibleEndpoints = [
-                        '/api/menu',
-                        '/api/meals',
-                        '/api/daily-menu',
-                        '/menu.json',
-                        '/api/v1/menu',
-                        '/api/restaurants/kaserne',
-                        '/api/menus/today'
-                    ];
-
-                    let menuData = null;
-
-                    // Try to fetch from different endpoints
-                    for (const endpoint of possibleEndpoints) {
-                        try {
-                            const response = await fetch(`${this.apiBase}${endpoint}`);
-                            if (response.ok) {
-                                const data = await response.json();
-                                if (data && (Array.isArray(data) || data.menus || data.meals)) {
-                                    menuData = Array.isArray(data) ? data : (data.menus || data.meals || [data]);
-                                    break;
-                                }
-                            }
-                        } catch (e) {
-                            console.log(`Endpoint ${endpoint} failed:`, e);
-                        }
-                    }
-
-                    // If no API endpoint works, try to scrape the HTML
-                    if (!menuData) {
-                        menuData = await this.scrapeMenuFromHTML();
-                    }
-
-                    if (menuData && menuData.length > 0) {
-                        this.renderMenu(menuData);
-                    } else {
-                        this.showError('Keine Menüdaten verfügbar.');
-                    }
-
-                } catch (error) {
-                    console.error('Error loading menu:', error);
-                    this.showError('Fehler beim Laden der Menüdaten.');
-                }
-            }
-
-            async scrapeMenuFromHTML() {
-                try {
-                    const response = await fetch(this.apiBase, {
-                        headers: {
-                            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-                            'Accept-Language': 'de,en;q=0.5',
-                            'Cache-Control': 'no-cache'
-                        }
-                    });
-                    
-                    if (!response.ok) {
-                        throw new Error(`HTTP ${response.status}`);
-                    }
-                    
-                    const html = await response.text();
-                    console.log('Fetched HTML length:', html.length);
-                    console.log(`Extracting menu for: ${this.mealType}`);
-                    
-                    // First try direct text extraction for Eurest format
-                    let menuItems = this.extractMenuFromText(html);
-                    
-                    if (menuItems.length === 0) {
-                        // If text extraction fails, try DOM parsing
-                        const parser = new DOMParser();
-                        const doc = parser.parseFromString(html, 'text/html');
-                        menuItems = this.extractMenuFromDOM(doc);
-                    }
-
-                    // Remove duplicates and filter valid items
-                    const uniqueItems = this.removeDuplicates(menuItems);
-                    console.log(`Final menu items for ${this.mealType}: ${uniqueItems.length}`);
-                    
-                    return uniqueItems.length > 0 ? uniqueItems : this.createSampleMenu();
-                    
-                } catch (error) {
-                    console.error('Error scraping HTML:', error);
-                    return this.createSampleMenu();
-                }
-            }
-
-            extractMenuFromDOM(doc) {
-                const menuItems = [];
-                
-                console.log('Trying DOM selectors for Eurest Treffpunkt...');
-                
-                // Try to find menu items in common Eurest structures
-                const selectors = [
-                    // Specific Eurest selectors
-                    '.meal-card', '.menu-card', '.dish-card', '.meal-item', '.menu-item',
-                    '.dish-item', '.food-card', '.restaurant-meal', '[data-meal]', '[data-dish]',
-                    // Generic content selectors that might contain menu items
-                    '.card', '.item', '.product', 'article', '.content-item', '.list-item',
-                    // Broader selectors for divs that might contain menu structure
-                    'div[class*="menu"]', 'div[class*="meal"]', 'div[class*="dish"]',
-                    'section', 'li', '.row', '.col'
-                ];
-                
-                for (const selector of selectors) {
-                    const elements = doc.querySelectorAll(selector);
-                    console.log(`Selector "${selector}" found ${elements.length} elements`);
-                    
-                    if (elements.length > 0) {
-                        elements.forEach((el, index) => {
-                            const elementText = el.textContent || '';
-                            
-                            // Look for text patterns that match menu items from the sample data
-                            const menuPattern = /([A-ZÄÖÜ][a-zäöüß\s\(\),.-]+?)\s+([a-zäöüß][^A-ZÄÖÜ]*?)\s+(Menu|Vegi|Hit|Menu Abend|Vegi Abend)(?:\s+\+)?\s+CHF\s+(\d+[.,]\d{2})/gi;
-                            const matches = [...elementText.matchAll(menuPattern)];
-                            
-                            if (matches.length > 0) {
-                                matches.forEach(match => {
-                                    const [, title, description, category, price] = match;
-                                    if (this.shouldIncludeMenuItem(title, description, category)) {
-                                        menuItems.push({
-                                            title: this.cleanText(title),
-                                            description: this.cleanText(description),
-                                            price: `CHF ${price}`,
-                                            category: this.cleanText(category)
-                                        });
-                                        console.log(`DOM: Found menu item: ${title} - ${category} - CHF ${price}`);
-                                    }
-                                });
-                            } else {
-                                // Fallback: try to extract individual components
-                                const title = this.extractText(el, [
-                                    'h1, h2, h3, h4, h5, h6', '.title', '.name', '.dish-name', 
-                                    '.meal-name', '.food-title', '.product-name'
-                                ]);
-                                
-                                const description = this.extractText(el, [
-                                    'p', '.description', '.ingredients', '.details', '.content'
-                                ]);
-                                
-                                const price = this.extractText(el, [
-                                    '.price', '.cost', '.amount', 'span[class*="price"]'
-                                ]) || this.extractPriceFromText(elementText);
-                                
-                                const category = this.extractText(el, [
-                                    '.category', '.type', '.meal-type'
-                                ]) || this.extractCategoryFromText(elementText);
-                                
-                                if (title && title.length > 3 && this.shouldIncludeMenuItem(title, description, category)) {
-                                    menuItems.push({
-                                        title: this.cleanText(title),
-                                        description: this.cleanText(description) || '',
-                                        price: this.cleanText(price) || '',
-                                        category: this.determineCategory(title, description, category, el)
-                                    });
-                                }
-                            }
-                        });
-                        
-                        if (menuItems.length >= 2) {
-                            console.log(`Found ${menuItems.length} menu items with selector "${selector}"`);
-                            break;
-                        }
-                    }
-                }
-                
-                return menuItems;
-            }
-
-            extractPriceFromText(text) {
-                const priceMatch = text.match(/CHF\s*(\d+[.,]\d{2})/);
-                return priceMatch ? `CHF ${priceMatch[1]}` : '';
-            }
-
-            extractCategoryFromText(text) {
-                const categoryMatch = text.match(/(Menu|Vegi|Hit|Menu Abend|Vegi Abend)/i);
-                return categoryMatch ? categoryMatch[1] : '';
-            }
-
-            extractTitleFromText(text) {
-                // Extract potential food title from text
-                const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-                
-                for (const line of lines) {
-                    // Look for lines that could be food titles
-                    if (line.length > 5 && line.length < 100 && 
-                        !line.includes('CHF') && 
-                        !line.match(/^\d+/) &&
-                        !line.toLowerCase().includes('dessert') &&
-                        !line.toLowerCase().includes('frühstück')) {
-                        return line;
-                    }
-                }
-                
-                return '';
-            }
-
-            shouldIncludeMenuItem(title, description, category) {
-                const combinedText = `${title} ${description} ${category}`.toLowerCase();
-                const cat = category.toLowerCase();
-                // Always filter out breakfast and dessert
-                if (cat.includes('frühstück') || combinedText.includes('frühstück') ||
-                    combinedText.includes('kaffee') || combinedText.includes('cornflakes') ||
-                    combinedText.includes('fleisch- und käseplatte') ||
-                    cat.includes('dessert') || cat === 'tagesdessert' || combinedText.includes('dessert')) {
-                    return false;
-                }
-                if (this.mealType === 'lunch') {
-                    // Only allow Menu, Vegi, Hit (no Abend)
-                    return ['menu','vegi','hit'].includes(cat) && !cat.includes('abend');
-                } else if (this.mealType === 'dinner') {
-                    // Only allow Abend items
-                    return cat.includes('abend');
-                }
-                return true;
-            }
-
-            renderMenu(menuData) {
-                const content = document.getElementById('content');
-                if (!Array.isArray(menuData)) menuData = [menuData];
-                
-                // Filter menu data based on current meal type
-                if (this.mealType === 'lunch') {
-                    // For lunch: only show Menu, Vegi, Hit (no Abend items)
-                    menuData = menuData.filter(item => {
-                        const cat = (item.category || '').toLowerCase();
-                        return ['menu', 'vegi', 'hit'].includes(cat) && !cat.includes('abend');
-                    });
-                } else if (this.mealType === 'dinner') {
-                    // For dinner: prefer Abend items, fallback to regular items if no Abend items
-                    const abendItems = menuData.filter(item => (item.category||'').toLowerCase().includes('abend'));
-                    if (abendItems.length > 0) {
-                        menuData = abendItems;
-                    } else {
-                        menuData = menuData.filter(item => {
-                            const cat = (item.category || '').toLowerCase();
-                            return ['menu', 'vegi', 'hit'].includes(cat) && !cat.includes('abend');
-                        });
-                    }
-                }
-                
-                // If no items after filtering, use sample menu
-                if (menuData.length === 0) {
-                    menuData = this.createSampleMenu();
-                }
-                const mealTypeTitle = this.mealType === 'lunch' ? 'Lunch' : 'Dinner';
-                const currentDate = new Date().toLocaleDateString('de-CH', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-                const menuHTML = `
-                    <div style="text-align: center; margin-bottom: 2rem;">
-                        <h1 style="color: var(--primary-color); margin-bottom: 0.5rem;">${mealTypeTitle} - Kaserne Treffpunkt</h1>
-                        <p style="color: var(--secondary-color);">${currentDate}</p>
-                    </div>
-                    <div class="menu-grid">
-                        ${menuData.map(item => `
-                            <div class="menu-card">
-                                <div class="menu-category">${item.category || 'Gericht'}</div>
-                                <h3 class="menu-title">${item.title || item.name || 'Unbekanntes Gericht'}</h3>
-                                <p class="menu-description">${item.description || item.ingredients || 'Keine Beschreibung verfügbar'}</p>
-                                <div class="menu-price">${item.price || item.cost || 'Preis auf Anfrage'}</div>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-
-                content.innerHTML = menuHTML;
-            }
-
-            extractMenuFromText(html) {
-                const menuItems = [];
-                
-                // Remove HTML tags but keep structure with specific delimiters
-                const text = html.replace(/<script[^>]*>.*?<\/script>/gis, '')
-                              .replace(/<style[^>]*>.*?<\/style>/gis, '')
-                              .replace(/<br\s*\/?>/gi, '\n')
-                              .replace(/<\/div>/gi, '\n')
-                              .replace(/<\/p>/gi, '\n')
-                              .replace(/<[^>]*>/g, ' ')
-                              .replace(/\s+/g, ' ')
-                              .trim();
-                
-                console.log(`Processing text for ${this.mealType} menu extraction...`);
-                
-                // Look for the specific Eurest Treffpunkt pattern based on the provided data
-                // Pattern: Title Description Category CHF Price
-                const menuPattern = /([A-ZÄÖÜ][a-zäöüß\s\(\),.-]+?)\s+([a-zäöüß][^A-ZÄÖÜ]*?)\s+(Menu|Vegi|Hit|Menu Abend|Vegi Abend|Frühstück|Tagesdessert)(?:\s+\+)?\s+CHF\s+(\d+[.,]\d{2})/gi;
-                
-                let match;
-                while ((match = menuPattern.exec(text)) !== null) {
-                    const [fullMatch, title, description, category, price] = match;
-                    
-                    console.log(`Found potential menu item:`, { title, description, category, price });
-                    
-                    // Clean up the extracted data
-                    const cleanTitle = this.cleanText(title);
-                    const cleanDescription = this.cleanText(description);
-                    const cleanCategory = this.cleanText(category);
-                    const cleanPrice = `CHF ${price}`;
-                    
-                    // Apply meal type and content filtering
-                    if (this.shouldIncludeMenuItem(cleanTitle, cleanDescription, cleanCategory)) {
-                        menuItems.push({
-                            title: cleanTitle,
-                            description: cleanDescription,
-                            price: cleanPrice,
-                            category: cleanCategory
-                        });
-                        console.log(`Added menu item: ${cleanTitle} - ${cleanCategory} - ${cleanPrice}`);
-                    }
-                }
-                
-                // If the regex pattern didn't work, try a more flexible approach
-                if (menuItems.length === 0) {
-                    console.log('Regex pattern failed, trying flexible text extraction...');
-                    
-                    // Split into chunks around CHF prices
-                    const priceMatches = [...text.matchAll(/CHF\s+(\d+[.,]\d{2})/g)];
-                    
-                    for (let i = 0; i < priceMatches.length; i++) {
-                        const priceMatch = priceMatches[i];
-                        const price = `CHF ${priceMatch[1]}`;
-                        
-                        // Get text before this price (potential menu item)
-                        const beforePrice = text.substring(
-                            i > 0 ? priceMatches[i-1].index + priceMatches[i-1][0].length : 0,
-                            priceMatch.index
-                        ).trim();
-                        
-                        // Look for category keywords near the price
-                        const nearPrice = text.substring(
-                            Math.max(0, priceMatch.index - 100),
-                            Math.min(text.length, priceMatch.index + 50)
-                        );
-                        
-                        const categoryMatch = nearPrice.match(/(Menu|Vegi|Hit|Menu Abend|Vegi Abend|Frühstück|Tagesdessert)/i);
-                        const category = categoryMatch ? categoryMatch[1] : 'Menu';
-                        
-                        // Extract title and description from the text before price
-                        const lines = beforePrice.split(/\s{2,}|\n/).filter(l => l.trim().length > 3);
-                        if (lines.length >= 1) {
-                            const title = lines[lines.length - 1].trim();
-                            const description = lines.length > 1 ? lines[lines.length - 2].trim() : '';
-                            
-                            if (title.length > 3 && this.shouldIncludeMenuItem(title, description, category)) {
-                                menuItems.push({
-                                    title: this.cleanText(title),
-                                    description: this.cleanText(description),
-                                    price: price,
-                                    category: category
-                                });
-                                console.log(`Added flexible menu item: ${title} - ${category} - ${price}`);
-                            }
-                        }
-                    }
-                }
-                
-                return this.removeDuplicates(menuItems);
-            }
-
-            removeDuplicates(items) {
-                const seen = new Set();
-                return items.filter(item => {
-                    const key = `${item.title.toLowerCase()}-${item.category}`;
-                    if (seen.has(key)) {
-                        return false;
-                    }
-                    seen.add(key);
-                    return true;
-                });
-            }
-
-            cleanText(text) {
-                if (!text) return '';
-                return text.trim()
-                          .replace(/\s+/g, ' ')
-                          .replace(/[^\w\säöüÄÖÜß.,()&-]/g, '')
-                          .replace(/\s*,\s*/g, ', ')
-                          .replace(/\s*\(\s*/g, ' (')
-                          .replace(/\s*\)\s*/g, ') ')
-                          .trim();
-            }
-
-            createSampleMenu() {
-                // Create sample menu data based on actual Treffpunkt structure
-                const today = new Date();
-                const dayOfWeek = today.getDay();
-                
-                const lunchMenus = [
-                    {
-                        title: "Emmentaler Brätschnitzel (Schwein, CH)",
-                        description: "Rotweinjus, Teigwaren, Karotten Duo",
-                        price: "CHF 14.80",
-                        category: "Menu"
-                    },
-                    {
-                        title: "Indisches Linsen Dal",
-                        description: "mit Gemüse & Kartoffeln, Naan Brot, Tagessalat",
-                        price: "CHF 14.80",
-                        category: "Vegi"
-                    },
-                    {
-                        title: "Pasta al Pesto Rucola",
-                        description: "Reibkäse, Tagessalat",
-                        price: "CHF 14.20",
-                        category: "Hit"
-                    }
-                ];
-
-                const dinnerMenus = [
-                    {
-                        title: "Rotes Poulet (CH) Curry",
-                        description: "Basmatireis, Tagessalat",
-                        price: "CHF 14.00",
-                        category: "Menu Abend"
-                    },
-                    {
-                        title: "Rotes Kichererbsen Curry",
-                        description: "mit Gemüse, Basmatireis, Tagessalat",
-                        price: "CHF 14.00",
-                        category: "Vegi Abend"
-                    }
-                ];
-
-                const menuSource = this.mealType === 'lunch' ? lunchMenus : dinnerMenus;
-                
-                // Return items based on day of week
-                const numItems = this.mealType === 'lunch' ? 3 : 2; // Lunch has more options typically
-                const startIndex = dayOfWeek % menuSource.length;
-                
-                const result = [];
-                for (let i = 0; i < Math.min(numItems, menuSource.length); i++) {
-                    result.push(menuSource[(startIndex + i) % menuSource.length]);
-                }
-                
-                return result;
-            }
-
-            extractText(element, selectors) {
-                for (const selector of selectors) {
-                    const found = element.querySelector(selector);
-                    if (found && found.textContent && found.textContent.trim()) {
-                        return found.textContent.trim();
-                    }
-                }
-                return '';
-            }
-
-            determineCategory(title, description, category, element) {
-                const combinedText = `${title} ${description} ${category}`.toLowerCase();
-                
-                // Check the element and its siblings for category indicators
-                const elementText = element?.textContent?.toLowerCase() || '';
-                
-                // Look for Eurest-specific category markers
-                if (elementText.includes('vegi') || combinedText.includes('vegetarisch')) {
-                    return 'Vegi';
-                }
-                
-                if (elementText.includes('hit') || combinedText.includes('hit')) {
-                    return 'Hit';
-                }
-                
-                if (elementText.includes('menu') || combinedText.includes('menu')) {
-                    return 'Menu';
-                }
-                
-                // Check for vegetarian indicators
-                const vegiKeywords = [
-                    'vegetarisch', 'vegan', 'veggie', 'pasta', 'tortellini',
-                    'salat', 'gemüse', 'ricotta', 'spinat', 'tofu'
-                ];
-                
-                for (const keyword of vegiKeywords) {
-                    if (combinedText.includes(keyword)) {
-                        return 'Vegi';
-                    }
-                }
-                
-                // Check for meat dishes (Hit category indicators)
-                const meatKeywords = [
-                    'schnitzel', 'schweins', 'rind', 'fleisch', 'hähnchen',
-                    'poulet', 'lamm', 'kalb', 'steak'
-                ];
-                
-                for (const keyword of meatKeywords) {
-                    if (combinedText.includes(keyword)) {
-                        return 'Hit';
-                    }
-                }
-                
-                // Check for fish dishes
-                const fishKeywords = [
-                    'lachs', 'fisch', 'thunfisch', 'forelle', 'scholle',
-                    'kabeljau', 'meeresfrüchte'
-                ];
-                
-                for (const keyword of fishKeywords) {
-                    if (combinedText.includes(keyword)) {
-                        return 'Menu';
-                    }
-                }
-                
-                // Default category
-                return 'Menu';
-            }
-
-            showError(message) {
-                const content = document.getElementById('content');
-                content.innerHTML = `
-                    <div class="error">
-                        <strong>⚠️ ${message}</strong>
-                        <p>Bitte versuchen Sie es später erneut.</p>
-                    </div>
-                `;
-            }
-
-            setupMealToggle() {
-                const lunchBtn = document.getElementById('lunchBtn');
-                const dinnerBtn = document.getElementById('dinnerBtn');
-
-                lunchBtn.addEventListener('click', async () => {
-                    if (this.mealType !== 'lunch') {
-                        this.mealType = 'lunch';
-                        lunchBtn.classList.add('active');
-                        dinnerBtn.classList.remove('active');
-                        await this.loadMenu();
-                    }
-                });
-
-                dinnerBtn.addEventListener('click', async () => {
-                    if (this.mealType !== 'dinner') {
-                        this.mealType = 'dinner';
-                        dinnerBtn.classList.add('active');
-                        lunchBtn.classList.remove('active');
-                        await this.loadMenu();
-                    }
-                });
-            }
-
-            setupPWA() {
-                // Service Worker registration
-                if ('serviceWorker' in navigator) {
-                    navigator.serviceWorker.register('/sw.js')
-                        .then(registration => console.log('SW registered'))
-                        .catch(error => console.log('SW registration failed'));
-                }
-
-                // Install prompt
-                let deferredPrompt;
-                const installPrompt = document.getElementById('installPrompt');
-                const installBtn = document.getElementById('installBtn');
-                const dismissBtn = document.getElementById('dismissBtn');
-
-                window.addEventListener('beforeinstallprompt', (e) => {
-                    e.preventDefault();
-                    deferredPrompt = e;
-                    installPrompt.style.display = 'flex';
-                });
-
-                installBtn.addEventListener('click', async () => {
-                    if (deferredPrompt) {
-                        deferredPrompt.prompt();
-                        const { outcome } = await deferredPrompt.userChoice;
-                        deferredPrompt = null;
-                        installPrompt.style.display = 'none';
-                    }
-                });
-
-                dismissBtn.addEventListener('click', () => {
-                    installPrompt.style.display = 'none';
-                });
+        // Get default meal category based on current time
+        function getDefaultMealCategory() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const currentTime = hours * 60 + minutes; // Convert to minutes since midnight
+            
+            // Time thresholds in minutes
+            const breakfastEnd = 7 * 60 + 15; // 7:15
+            const lunchEnd = 13 * 60; // 13:00
+            const dinnerEnd = 19 * 60; // 19:00
+            
+            if (currentTime <= breakfastEnd) {
+                return 'breakfast';
+            } else if (currentTime <= lunchEnd) {
+                return 'lunch';
+            } else if (currentTime <= dinnerEnd) {
+                return 'dinner';
+            } else {
+                // After dinner time, show next day's breakfast
+                return 'breakfast';
             }
         }
 
         // Initialize the app
-        document.addEventListener('DOMContentLoaded', () => {
-            new Lunchinator();
+        document.addEventListener('DOMContentLoaded', function() {
+            generateWeekDays();
+            updateWeekLabel();
+            
+            // Set the correct meal category button as active
+            selectCategory(currentCategory);
+            
+            const today = new Date();
+            const dayOfWeek = today.getDay();
+            const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            
+            selectDay(currentDate, dayNames[dayOfWeek]);
+            loadMenu();
+            
+            // Register service worker for PWA
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('data:text/javascript,console.log("SW loaded")');
+            }
         });
+
+        // Generate day buttons for the current week (Monday to Friday only)
+        function generateWeekDays() {
+            const dayButtonsContainer = document.getElementById('dayButtons');
+            const today = new Date(currentDate);
+            const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+            const currentWeekStart = new Date(today);
+            
+            // Get Monday of current week
+            const dayOfWeek = today.getDay();
+            const daysToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+            currentWeekStart.setDate(today.getDate() + daysToMonday);
+            
+            let buttonsHtml = '';
+            
+            // Generate 5 day buttons (Monday to Friday)
+            for (let i = 0; i < 5; i++) {
+                const date = new Date(currentWeekStart);
+                date.setDate(currentWeekStart.getDate() + i);
+                
+                const dateStr = date.toISOString().split('T')[0];
+                const dayName = dayNames[i];
+                const dayNumber = date.getDate();
+                const isToday = dateStr === new Date().toISOString().split('T')[0];
+                
+                buttonsHtml += `
+                    <button onclick="selectDay('${dateStr}', '${dayName}')" 
+                            class="day-button swiftui-button py-3 px-2 text-center font-medium text-sm rounded-lg bg-ios-dark-3 text-ios-gray-2 ${isToday ? 'active' : ''}" 
+                            data-date="${dateStr}">
+                        <div class="text-xs opacity-75">${dayName}</div>
+                        <div class="text-lg font-semibold">${dayNumber}</div>
+                    </button>
+                `;
+            }
+            
+            dayButtonsContainer.innerHTML = buttonsHtml;
+        }
+
+        // Update week label
+        function updateWeekLabel() {
+            document.getElementById('weekLabel').textContent = `Week ${currentWeek}, ${currentYear}`;
+        }
+
+        // Select a day
+        function selectDay(date, dayName) {
+            currentDate = date;
+            
+            // Update button states
+            document.querySelectorAll('.day-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            const selectedBtn = document.querySelector(`[data-date="${date}"]`);
+            if (selectedBtn) {
+                selectedBtn.classList.add('active');
+            }
+            
+            loadMenu();
+        }
+
+        // Select category
+        function selectCategory(category) {
+            currentCategory = category;
+            
+            // Update segment control
+            document.querySelectorAll('[data-category]').forEach(btn => {
+                btn.classList.remove('segment-active');
+                btn.classList.add('text-ios-gray-2');
+            });
+            
+            const selectedBtn = document.querySelector(`[data-category="${category}"]`);
+            if (selectedBtn) {
+                selectedBtn.classList.add('segment-active');
+                selectedBtn.classList.remove('text-ios-gray-2');
+            }
+            
+            if (menuData) {
+                displayMenu(menuData);
+            }
+        }
+
+        // Week navigation
+        function previousWeek() {
+            const weekStart = new Date(currentDate);
+            weekStart.setDate(weekStart.getDate() - 7);
+            currentDate = weekStart.toISOString().split('T')[0];
+            currentWeek -= 1;
+            if (currentWeek < 1) {
+                currentWeek = 52;
+                currentYear -= 1;
+            }
+            generateWeekDays();
+            updateWeekLabel();
+            loadMenu();
+        }
+
+        function nextWeek() {
+            const weekStart = new Date(currentDate);
+            weekStart.setDate(weekStart.getDate() + 7);
+            currentDate = weekStart.toISOString().split('T')[0];
+            currentWeek += 1;
+            if (currentWeek > 52) {
+                currentWeek = 1;
+                currentYear += 1;
+            }
+            generateWeekDays();
+            updateWeekLabel();
+            loadMenu();
+        }
+
+        // Generate base64 payload for the current week (using correct API format)
+        function generateCurrentPayload(date) {
+            const targetDate = new Date(date);
+            const startOfWeek = new Date(targetDate);
+            startOfWeek.setDate(targetDate.getDate() - targetDate.getDay() + 1);
+            
+            const endOfWeek = new Date(startOfWeek);
+            endOfWeek.setDate(startOfWeek.getDate() + 6);
+            
+            const formatDate = (d) => d.toISOString().split('T')[0];
+            const startDate = formatDate(startOfWeek);
+            const endDate = formatDate(endOfWeek);
+            const currentDate = formatDate(targetDate);
+            
+            const fieldsStart = '100-0/+MenuDate1&+MenuOrder1/ID';
+            const otherFields = [
+                'MenuDate1',
+                'MenuIngredients1',
+                'MenuIngredients2',
+                'MenuIngredients3', 
+                'MenuIngredients4',
+                'MenuPricePrefix1',
+                'MenuPrice1',
+                'MenuPrice2',
+                'MenuPrice3',
+                'MenuPrice4',
+                'MenuPriceDescription1',
+                'MenuPriceDescription2',
+                'MenuPriceDescription3',
+                'MenuPriceDescription4',
+                'Menuline.ID',
+                'Menuline._LanguageConfig',
+                'Menuline.MenulineLabel1',
+                'Menuline.MenulineKey1',
+                'Menuline.MenulineOrder1',
+                'Menuline.Outlet',
+                'Special',
+                'MenuDeclaration',
+                '_LanguageConfig',
+                'Outlet.ID',
+                'MenuAdditionalInformation1',
+                'MenuNutriscore1',
+                'MenuEcoscore1',
+                'MenuAcidBased1'
+            ];
+            
+            const filters = [
+                `MenuOrder1/MenuDate1=bt:{{${startDate}|${endDate}}}`,
+                `MenuDate1=ge:{{${currentDate}}}`,
+                'Outlet=eq:{{573}}',
+                `MenuDate1=le:{{${endDate}}}`
+            ];
+            
+            const params = [fieldsStart, ...otherFields, ...filters].join('&');
+            return btoa(encodeURIComponent(params));
+        }
+
+        // Build API URL
+        function buildApiUrl(date) {
+            const baseUrl = 'https://clients.eurest.ch/api/Menu';
+            const base64Payload = generateCurrentPayload(date);
+            return `${baseUrl}/${base64Payload}`;
+        }
+
+        // Load menu data from API
+        async function loadMenu() {
+            const loadingState = document.getElementById('loadingState');
+            const menuContainer = document.getElementById('menuContainer');
+            const errorState = document.getElementById('errorState');
+
+            loadingState.classList.remove('hidden');
+            menuContainer.innerHTML = '';
+            errorState.classList.add('hidden');
+
+            try {
+                const apiUrl = buildApiUrl(currentDate);
+                console.log('Fetching from:', apiUrl);
+
+                const response = await fetch(apiUrl, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15',
+                        'Referer': 'https://clients.eurest.ch/kaserne/de/Treffpunkt'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                console.log('API Response:', data);
+                
+                menuData = data;
+                displayMenu(data);
+
+            } catch (error) {
+                console.error('Error loading menu:', error);
+                errorState.classList.remove('hidden');
+            } finally {
+                loadingState.classList.add('hidden');
+            }
+        }
+
+        // Display menu items
+        function displayMenu(data) {
+            const menuContainer = document.getElementById('menuContainer');
+            const errorState = document.getElementById('errorState');
+
+            if (!data || !data.data || (Array.isArray(data.data) && data.data.length === 0)) {
+                errorState.classList.remove('hidden');
+                return;
+            }
+
+            let menuItems = data.data || [];
+            const filteredItems = filterByDateAndCategory(menuItems, currentDate, currentCategory);
+            
+            if (filteredItems.length === 0) {
+                menuContainer.innerHTML = `
+                    <div class="text-center py-8">
+                        <div class="text-ios-gray text-lg mb-2">No ${currentCategory} menu available</div>
+                        <div class="text-ios-gray-2 text-sm">for ${new Date(currentDate).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</div>
+                    </div>
+                `;
+                return;
+            }
+
+            const menuHtml = filteredItems.map(item => createMenuItemHtml(item)).join('');
+            menuContainer.innerHTML = menuHtml;
+            menuContainer.classList.add('slide-up');
+        }
+
+        // Filter menu items by date and category
+        function filterByDateAndCategory(items, targetDate, category) {
+            const targetDateStr = targetDate;
+            const dateFilteredItems = items.filter(item => {
+                if (!item.MenuDate1) return false;
+                // The API returns dates like "2025-07-20T22:00:00.000Z" which is actually the next day
+                // We need to parse this correctly
+                const itemDate = new Date(item.MenuDate1);
+                // Add one day to get the actual menu date
+                itemDate.setDate(itemDate.getDate() + 1);
+                const itemDateStr = itemDate.toISOString().split('T')[0];
+                return itemDateStr === targetDateStr;
+            });
+
+            return dateFilteredItems.filter(item => {
+                if (!item.Menuline || !item.Menuline.MenulineKey1) return true;
+                
+                const menulineKey = item.Menuline.MenulineKey1.toLowerCase();
+                
+                switch (category) {
+                    case 'breakfast':
+                        return menulineKey.includes('frühstück');
+                    case 'lunch':
+                        return menulineKey === 'menu' || menulineKey === 'vegi' || menulineKey === 'hit';
+                    case 'dinner':
+                        return menulineKey.includes('abend') || menulineKey === 'tagesdessert';
+                    default:
+                        return true;
+                }
+            });
+        }
+
+        // Create HTML for a menu item
+        function createMenuItemHtml(item) {
+            const menulineLabel = item.Menuline?.MenulineLabel1 ? 
+                JSON.parse(item.Menuline.MenulineLabel1).DE || item.Menuline.MenulineKey1 : 'Menu Item';
+            
+            // Get the actual dish description (ingredients combined) - this should be the main title
+            const ingredients = [];
+            for (let i = 1; i <= 4; i++) {
+                const ingredient = item[`MenuIngredients${i}`];
+                if (ingredient) {
+                    const parsed = JSON.parse(ingredient);
+                    if (parsed.DE && parsed.DE.trim()) ingredients.push(parsed.DE.trim());
+                }
+            }
+            const dishName = ingredients.join(', ').replace(/,+/g, ',').replace(/,\s*,/g, ',') || 'No description available';
+            
+            const price = item.MenuPrice1 || 0;
+            
+            // Process dietary information with colors
+            const declarations = item.MenuDeclaration || [];
+            const dietaryInfo = declarations.map(decl => {
+                if (decl.MenuDeclarationLabel1) {
+                    const parsed = JSON.parse(decl.MenuDeclarationLabel1);
+                    const label = parsed.DE || parsed.EN || 'Unknown';
+                    
+                    // Determine color class based on dietary type
+                    let colorClass = 'dietary-badge';
+                    const labelLower = label.toLowerCase();
+                    
+                    if (labelLower.includes('vegetarisch') || labelLower.includes('vegetarian')) {
+                        colorClass += ' vegetarian';
+                    } else if (labelLower.includes('schwein') || labelLower.includes('pork')) {
+                        colorClass += ' pork';
+                    } else if (labelLower.includes('rindfleisch') || labelLower.includes('beef')) {
+                        colorClass += ' beef';
+                    } else if (labelLower.includes('geflügel') || labelLower.includes('poultry')) {
+                        colorClass += ' poultry';
+                    } else if (labelLower.includes('fisch') || labelLower.includes('fish')) {
+                        colorClass += ' fish';
+                    } else if (labelLower.includes('kalbfleisch') || labelLower.includes('veal')) {
+                        colorClass += ' veal';
+                    }
+                    
+                    return { label, colorClass };
+                }
+                return null;
+            }).filter(info => info);
+            
+            const priceHtml = price > 0 ? `<span class="price-badge text-xs px-3 py-1 rounded-full">CHF ${price.toFixed(2)}</span>` : '';
+            
+            // Menu type badge (Menu, Vegi, Hit, etc.)
+            const menuTypeBadge = `<span class="menu-type-badge text-xs px-2 py-1 rounded-full">${menulineLabel}</span>`;
+            
+            // Create dietary badges with different colors
+            const dietaryHtml = dietaryInfo.length > 0 ? 
+                dietaryInfo.map(info => `<span class="${info.colorClass} text-xs px-2 py-1 rounded-full mr-2">${info.label}</span>`).join('') : '';
+
+            return `
+                <div class="swiftui-card p-4 rounded-xl swiftui-button" onclick="showItemDetails('${dishName}', '${menulineLabel}')">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-semibold text-white flex-1 pr-3 text-lg leading-tight">${dishName}</h3>
+                        ${priceHtml}
+                    </div>
+                    <div class="flex flex-wrap gap-2 mb-3">
+                        ${menuTypeBadge}
+                        ${dietaryHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Show item details
+        function showItemDetails(dishName, menuType) {
+            // Create a simple modal-like alert for now
+            const message = `${dishName}\n\nType: ${menuType}`;
+            
+            // For iOS, we can create a more native-looking modal
+            if (window.confirm(message)) {
+                // User clicked OK
+            }
+        }
     </script>
 </body>
 </html>
