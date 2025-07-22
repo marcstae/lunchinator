@@ -1,4 +1,4 @@
-# 🍽️ Lunchinator
+# 🍽️ Eatinator
 
 A Progressive Web App (PWA) that displays the daily lunch menu from the Eurest restaurant at Kaserne Bern. It scrapes the menu directly from the website and presents it in a clean, dark-mode interface.
 
@@ -20,4 +20,4 @@ The application first attempts to fetch menu data from a series of potential, un
 3.  It uses a series of increasingly general CSS selectors to find the menu content, making it resilient to minor changes in the website's structure.
 4.  The extracted data is cleaned, categorized, and displayed to the user.
 
-This ensures that even without a formal API, the Lunchinator can reliably provide the daily menu.
+This ensures that even without a formal API, the Eatinator can reliably provide the daily menu.

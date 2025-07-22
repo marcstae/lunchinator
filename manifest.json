@@ -1,6 +1,6 @@
 {
-    "name": "Eurest Menu",
-    "short_name": "Eurest",
+    "name": "Treffpunkt Menu",
+    "short_name": "Treffpunkt",
     "description": "Eurest Kaserne Treffpunkt Menu",
     "start_url": ".",
     "display": "standalone",
