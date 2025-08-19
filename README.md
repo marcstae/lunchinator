@@ -8,8 +8,23 @@ A Progressive Web App (PWA) that displays the daily lunch menu from the Eurest r
 - **PWA**: Installable on mobile and desktop devices for an app-like experience with offline access.
 - **Dark Mode**: Easy-to-read interface, perfect for all lighting conditions.
 - **Menu Categorization**: Automatically categorizes meals into "Menu", "Vegi", and "Hit".
+- **Show All Categories**: Toggle to view all menu categories (Breakfast, Lunch, Dinner) at once instead of switching between them.
+- **UwU Mode**: Kawaii mode with adorable pink styling and cute text transformations for a vewwwyy kawaii experience ✨
 - **Fallback System**: If direct API access fails, it falls back to scraping the HTML to ensure you always get the menu.
 - **Zero Dependencies**: Runs in any modern browser without needing any special setup.
+
+### 🎀 UwU Mode
+When enabled, UwU Mode transforms the entire interface into a kawaii paradise:
+- Pink gradient theme throughout the app
+- Adorable text transformations (r→w, l→w, adding "uwu", "owo", ">w<")
+- Cute sparkle emoji (✨) effects
+- All menu items get the kawaii treatment!
+
+### 📋 Show All Categories
+Toggle this setting to:
+- Display all menu categories simultaneously with organized headers
+- Hide the bottom navigation for more screen space
+- See Breakfast, Lunch, and Dinner items all at once
 
 ## 🔧 How It Works
 

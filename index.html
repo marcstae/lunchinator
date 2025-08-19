@@ -179,6 +179,109 @@
         .safe-bottom {
             padding-bottom: env(safe-area-inset-bottom);
         }
+        
+        /* Toggle Switch Styles */
+        .toggle-switch {
+            position: relative;
+            width: 48px;
+            height: 28px;
+            cursor: pointer;
+        }
+        
+        .toggle-input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(58, 58, 60, 0.8);
+            border-radius: 20px;
+            transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            border-radius: 50%;
+            transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .toggle-input:checked + .toggle-slider {
+            background-color: #007AFF;
+        }
+        
+        .toggle-input:checked + .toggle-slider:before {
+            transform: translateX(20px);
+        }
+        
+        /* UwU Mode Styles */
+        .uwu-mode {
+            --uwu-primary: #FF69B4;
+            --uwu-secondary: #FFB6C1;
+            --uwu-accent: #FFC0CB;
+        }
+        
+        .uwu-mode .swiftui-card {
+            background: linear-gradient(135deg, rgba(255, 105, 180, 0.2), rgba(255, 182, 193, 0.2));
+            border: 1px solid rgba(255, 105, 180, 0.4);
+        }
+        
+        .uwu-mode .segment-control {
+            background: rgba(255, 105, 180, 0.3);
+        }
+        
+        .uwu-mode .segment-active {
+            background: var(--uwu-primary);
+        }
+        
+        .uwu-mode .day-button.active {
+            background: var(--uwu-primary);
+            border-color: var(--uwu-primary);
+        }
+        
+        .uwu-mode .price-badge {
+            background: linear-gradient(135deg, var(--uwu-primary), var(--uwu-secondary));
+        }
+        
+        .uwu-mode .menu-type-badge {
+            background: rgba(255, 105, 180, 0.6);
+            color: white;
+            border: 1px solid rgba(255, 105, 180, 0.8);
+        }
+        
+        .uwu-mode h1 {
+            color: var(--uwu-primary);
+        }
+        
+        .uwu-mode .uwu-text::after {
+            content: " ✨";
+        }
+        
+        /* Category headers for show all mode */
+        .category-header {
+            background: rgba(0, 122, 255, 0.8);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            margin: 16px 0 8px 0;
+            text-align: center;
+        }
+        
+        .uwu-mode .category-header {
+            background: linear-gradient(135deg, var(--uwu-primary), var(--uwu-secondary));
+        }
     </style>
 </head>
 <body class="dark bg-ios-dark-1 text-white min-h-screen">
@@ -201,6 +304,26 @@
                 <button class="swiftui-button text-ios-blue font-medium" onclick="nextWeek()">
                     Next →
                 </button>
+            </div>
+        </div>
+
+        <!-- Settings Section -->
+        <div class="px-4 py-3 border-b border-ios-dark-4">
+            <div class="space-y-3">
+                <div class="flex justify-between items-center">
+                    <span class="text-ios-gray-2 font-medium">Show All Categories</span>
+                    <div class="toggle-switch" onclick="toggleShowAll()">
+                        <input type="checkbox" id="showAllToggle" class="toggle-input">
+                        <span class="toggle-slider"></span>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-ios-gray-2 font-medium uwu-text">UwU Mode</span>
+                    <div class="toggle-switch" onclick="toggleUwuMode()">
+                        <input type="checkbox" id="uwuToggle" class="toggle-input">
+                        <span class="toggle-slider"></span>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -261,6 +384,10 @@
         let currentWeek = Math.ceil(((new Date() - new Date(new Date().getFullYear(), 0, 1)) / 86400000 + 1) / 7);
         let currentYear = new Date().getFullYear();
         let menuData = null;
+        
+        // Settings state
+        let showAllCategories = localStorage.getItem('showAllCategories') === 'true';
+        let uwuModeEnabled = localStorage.getItem('uwuModeEnabled') === 'true';
 
         // Get default meal category based on current time
         function getDefaultMealCategory() {
@@ -288,6 +415,21 @@
 
         // Initialize the app
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize settings
+            document.getElementById('showAllToggle').checked = showAllCategories;
+            document.getElementById('uwuToggle').checked = uwuModeEnabled;
+            
+            // Apply UwU mode if enabled
+            if (uwuModeEnabled) {
+                document.body.classList.add('uwu-mode');
+            }
+            
+            // Hide/show bottom navigation based on show all setting
+            const bottomNav = document.querySelector('.fixed.bottom-0');
+            if (showAllCategories) {
+                bottomNav.style.display = 'none';
+            }
+            
             generateWeekDays();
             updateWeekLabel();
             
@@ -532,21 +674,88 @@
             }
 
             let menuItems = data.data || [];
-            const filteredItems = filterByDateAndCategory(menuItems, currentDate, currentCategory);
             
-            if (filteredItems.length === 0) {
-                menuContainer.innerHTML = `
-                    <div class="text-center py-8">
-                        <div class="text-ios-gray text-lg mb-2">No ${currentCategory} menu available</div>
-                        <div class="text-ios-gray-2 text-sm">for ${new Date(currentDate).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</div>
-                    </div>
-                `;
-                return;
-            }
+            if (showAllCategories) {
+                // Show all categories grouped together
+                const dateFilteredItems = filterByDateOnly(menuItems, currentDate);
+                
+                if (dateFilteredItems.length === 0) {
+                    menuContainer.innerHTML = `
+                        <div class="text-center py-8">
+                            <div class="text-ios-gray text-lg mb-2">${uwuModeEnabled ? uwuifyText('No menu available') : 'No menu available'}</div>
+                            <div class="text-ios-gray-2 text-sm">${uwuModeEnabled ? uwuifyText('for') : 'for'} ${new Date(currentDate).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</div>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Group items by category
+                const categories = {
+                    breakfast: { items: [], label: uwuModeEnabled ? uwuifyText('Breakfast') : 'Breakfast' },
+                    lunch: { items: [], label: uwuModeEnabled ? uwuifyText('Lunch') : 'Lunch' },
+                    dinner: { items: [], label: uwuModeEnabled ? uwuifyText('Dinner') : 'Dinner' }
+                };
+                
+                dateFilteredItems.forEach(item => {
+                    if (!item.Menuline || !item.Menuline.MenulineKey1) {
+                        categories.lunch.items.push(item);
+                        return;
+                    }
+                    
+                    const menulineKey = item.Menuline.MenulineKey1.toLowerCase();
+                    
+                    if (menulineKey.includes('frühstück')) {
+                        categories.breakfast.items.push(item);
+                    } else if (menulineKey === 'menu' || menulineKey === 'vegi' || menulineKey === 'hit') {
+                        categories.lunch.items.push(item);
+                    } else if (menulineKey.includes('abend') || menulineKey === 'tagesdessert') {
+                        categories.dinner.items.push(item);
+                    } else {
+                        categories.lunch.items.push(item);
+                    }
+                });
+                
+                let allMenuHtml = '';
+                Object.keys(categories).forEach(categoryKey => {
+                    const category = categories[categoryKey];
+                    if (category.items.length > 0) {
+                        allMenuHtml += `<div class="category-header">${category.label}</div>`;
+                        allMenuHtml += category.items.map(item => createMenuItemHtml(item)).join('');
+                    }
+                });
+                
+                menuContainer.innerHTML = allMenuHtml;
+            } else {
+                // Original single category behavior
+                const filteredItems = filterByDateAndCategory(menuItems, currentDate, currentCategory);
+                
+                if (filteredItems.length === 0) {
+                    menuContainer.innerHTML = `
+                        <div class="text-center py-8">
+                            <div class="text-ios-gray text-lg mb-2">${uwuModeEnabled ? uwuifyText(`No ${currentCategory} menu available`) : `No ${currentCategory} menu available`}</div>
+                            <div class="text-ios-gray-2 text-sm">${uwuModeEnabled ? uwuifyText('for') : 'for'} ${new Date(currentDate).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</div>
+                        </div>
+                    `;
+                    return;
+                }
 
-            const menuHtml = filteredItems.map(item => createMenuItemHtml(item)).join('');
-            menuContainer.innerHTML = menuHtml;
+                const menuHtml = filteredItems.map(item => createMenuItemHtml(item)).join('');
+                menuContainer.innerHTML = menuHtml;
+            }
+            
             menuContainer.classList.add('slide-up');
+        }
+        
+        // Filter menu items by date only (for show all mode)
+        function filterByDateOnly(items, targetDate) {
+            const targetDateStr = targetDate;
+            return items.filter(item => {
+                if (!item.MenuDate1) return false;
+                const itemDate = new Date(item.MenuDate1);
+                itemDate.setDate(itemDate.getDate() + 1);
+                const itemDateStr = itemDate.toISOString().split('T')[0];
+                return itemDateStr === targetDateStr;
+            });
         }
 
         // Filter menu items by date and category
@@ -632,16 +841,22 @@
             const priceHtml = price > 0 ? `<span class="price-badge text-xs px-3 py-1 rounded-full">CHF ${price.toFixed(2)}</span>` : '';
             
             // Menu type badge (Menu, Vegi, Hit, etc.)
-            const menuTypeBadge = `<span class="menu-type-badge text-xs px-2 py-1 rounded-full">${menulineLabel}</span>`;
+            const displayMenulineLabel = uwuModeEnabled ? uwuifyText(menulineLabel) : menulineLabel;
+            const menuTypeBadge = `<span class="menu-type-badge text-xs px-2 py-1 rounded-full">${displayMenulineLabel}</span>`;
             
             // Create dietary badges with different colors
             const dietaryHtml = dietaryInfo.length > 0 ? 
-                dietaryInfo.map(info => `<span class="${info.colorClass} text-xs px-2 py-1 rounded-full mr-2">${info.label}</span>`).join('') : '';
+                dietaryInfo.map(info => {
+                    const displayLabel = uwuModeEnabled ? uwuifyText(info.label) : info.label;
+                    return `<span class="${info.colorClass} text-xs px-2 py-1 rounded-full mr-2">${displayLabel}</span>`;
+                }).join('') : '';
+
+            const displayDishName = uwuModeEnabled ? uwuifyText(dishName) : dishName;
 
             return `
-                <div class="swiftui-card p-4 rounded-xl swiftui-button" onclick="showItemDetails('${dishName}', '${menulineLabel}')">
+                <div class="swiftui-card p-4 rounded-xl swiftui-button" onclick="showItemDetails('${dishName.replace(/'/g, '\\\'').replace(/"/g, '&quot;')}', '${menulineLabel.replace(/'/g, '\\\'').replace(/"/g, '&quot;')}')">
                     <div class="flex justify-between items-start mb-2">
-                        <h3 class="font-semibold text-white flex-1 pr-3 text-lg leading-tight">${dishName}</h3>
+                        <h3 class="font-semibold text-white flex-1 pr-3 text-lg leading-tight">${displayDishName}</h3>
                         ${priceHtml}
                     </div>
                     <div class="flex flex-wrap gap-2 mb-3">
@@ -655,11 +870,67 @@
         // Show item details
         function showItemDetails(dishName, menuType) {
             // Create a simple modal-like alert for now
-            const message = `${dishName}\n\nType: ${menuType}`;
+            const message = uwuModeEnabled ? 
+                `${uwuifyText(dishName)}\n\nType: ${uwuifyText(menuType)}` : 
+                `${dishName}\n\nType: ${menuType}`;
             
             // For iOS, we can create a more native-looking modal
             if (window.confirm(message)) {
                 // User clicked OK
+            }
+        }
+        
+        // UwU text transformation
+        function uwuifyText(text) {
+            if (!uwuModeEnabled) return text;
+            
+            return text
+                .toLowerCase()
+                .replace(/r/g, 'w')
+                .replace(/l/g, 'w')
+                .replace(/n([aeiou])/g, 'ny$1')
+                .replace(/ove/g, 'uv')
+                .replace(/\b(you|u)\b/g, 'uwu')
+                .replace(/th/g, 'f')
+                .replace(/\b(the)\b/g, 'da')
+                .replace(/!/g, ' uwu!')
+                .replace(/\./g, ' owo.')
+                + (Math.random() > 0.7 ? ' >w<' : Math.random() > 0.5 ? ' uwu' : ' owo');
+        }
+        
+        // Toggle functions
+        function toggleShowAll() {
+            showAllCategories = !showAllCategories;
+            localStorage.setItem('showAllCategories', showAllCategories);
+            document.getElementById('showAllToggle').checked = showAllCategories;
+            
+            // Update bottom navigation visibility
+            const bottomNav = document.querySelector('.fixed.bottom-0');
+            if (showAllCategories) {
+                bottomNav.style.display = 'none';
+            } else {
+                bottomNav.style.display = 'block';
+            }
+            
+            if (menuData) {
+                displayMenu(menuData);
+            }
+        }
+        
+        function toggleUwuMode() {
+            uwuModeEnabled = !uwuModeEnabled;
+            localStorage.setItem('uwuModeEnabled', uwuModeEnabled);
+            document.getElementById('uwuToggle').checked = uwuModeEnabled;
+            
+            // Apply/remove uwu mode class to body
+            if (uwuModeEnabled) {
+                document.body.classList.add('uwu-mode');
+            } else {
+                document.body.classList.remove('uwu-mode');
+            }
+            
+            if (menuData) {
+                displayMenu(menuData);
             }
         }
     </script>
