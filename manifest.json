@@ -1,7 +1,7 @@
 {
-    "name": "Treffpunkt Menu",
-    "short_name": "Treffpunkt",
-    "description": "Eurest Kaserne Treffpunkt Menu",
+    "name": "Timeout Menu",
+    "short_name": "Timeout",
+    "description": "Eurest Kaserne Timeout Menu",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#000000",
